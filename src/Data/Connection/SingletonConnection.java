@@ -27,11 +27,11 @@ import java.util.logging.Logger;
  */
 public class SingletonConnection implements Serializable {
 
-    private String dbHost = "localhost";
-    private final String DB_NAME = "db_restaurant3";
-    private String dbUser = "root";
-    private String dbPassword = "123";
-    private final int DB_PORT = 3306;
+    private String dbHost = "mail.ficct.uagrm.edu.bo";
+    private final String DB_NAME = "db_grupo06sc";
+    private String dbUser = "grupo06sc";
+    private String dbPassword = "grupo06grupo06";
+    private final int DB_PORT = 5432;
     private final String url;
     private Connection objConnection;
     private Connection objConnectionBinnacle;
@@ -41,11 +41,11 @@ public class SingletonConnection implements Serializable {
         this.dbHost = dbHost;
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
-        url = "jdbc:mysql://" + dbHost + ":" + DB_PORT + "/" + DB_NAME + "?autoReconnect=true&useSSL=false";
+        url = "jdbc:postgresql://" + dbHost + ":" + DB_PORT + "/" + DB_NAME + "?autoReconnect=true&useSSL=false";
     }
 
     private SingletonConnection() {
-        url = "jdbc:mysql://" + dbHost + ":" + DB_PORT + "/" + DB_NAME + "?autoReconnect=true&useSSL=false";
+        url = "jdbc:postgresql://" + dbHost + ":" + DB_PORT + "/" + DB_NAME + "?autoReconnect=true&useSSL=false";
     }
 
     /**
