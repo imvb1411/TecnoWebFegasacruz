@@ -5,9 +5,9 @@
  */
 package fegasacruz;
 
-import Models.ClientPOP;
-import Models.ClientSMTP;
-import Models.MailMessage;
+import Models.Socket.ClientPOP;
+import Models.Socket.ClientSMTP;
+import Models.Socket.MailMessage;
 import java.util.List;
 import java.util.Map;
 

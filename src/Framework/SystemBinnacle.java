@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package Framework;
 
+import Framework.Status;
 import Data.Connection.GenericStoredProcedures;
 import Framework.Entity;
 import Framework.Model;

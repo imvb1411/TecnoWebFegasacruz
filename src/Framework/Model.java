@@ -7,8 +7,6 @@ package Framework;
 
 import Data.Connection.GenericStoredProcedures;
 import Data.Connection.SingletonConnection;
-import Models.Status;
-import Models.SystemBinnacle;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
