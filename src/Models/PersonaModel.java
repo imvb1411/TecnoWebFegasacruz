@@ -33,10 +33,12 @@ public class PersonaModel extends Model<PersonaEntity>{
         Map<String,Object> args=new HashMap<>();
         args.put("id", entity.getId());
         args.put("ci", entity.getCi());
-        args.put("firstname", entity.getFirstname());
-        args.put("lastname", entity.getLastname());
-        args.put("phone", entity.getPhone());
-        args.put("status", entity.getStatus());
+        args.put("nomre", entity.getNombre());
+        args.put("apellido", entity.getApellido());
+        args.put("telefono", entity.getTelefono());
+        args.put("email", entity.getEmail());
+        args.put("tipo_persona", entity.getTipoPersona());
+        args.put("estado", entity.getEstado());
         return new Entity("users_people", args);
     }
 
@@ -46,9 +48,9 @@ public class PersonaModel extends Model<PersonaEntity>{
         if(rs.next()){
             entity.setId(rs.getInt("id"));
             entity.setCi(rs.getString("ci"));
-            entity.setFirstname(rs.getString("firstname"));
-            entity.setLastname(rs.getString("lastname"));
-            entity.setStatus(rs.getByte("status"));
+            entity.setNombre(rs.getString("nombre"));
+            entity.setApellido(rs.getString("apellido"));
+            entity.setEstado(rs.getByte("estado"));
         }
         return entity;
     }

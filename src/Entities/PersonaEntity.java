@@ -14,12 +14,14 @@ import java.sql.Timestamp;
 public class PersonaEntity {
     private int id;
     private String ci;
-    private String firstname;
-    private String lastname;
-    private String phone;
-    private Timestamp created_at;
-    private Timestamp updated_at;
-    private byte status;
+    private String nombre;
+    private String apellido;
+    private String telefono;
+    private String email;
+    private String tipoPersona;
+    private Timestamp fechaReg;
+    private Timestamp fechaMod;
+    private byte estado;
 
     public PersonaEntity() {
     }
@@ -40,53 +42,66 @@ public class PersonaEntity {
         this.ci = ci;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Timestamp getUpdated_at() {
-        return updated_at;
+    public Timestamp getFechaReg() {
+        return fechaReg;
     }
 
-    public void setUpdated_at(Timestamp updated_at) {
-        this.updated_at = updated_at;
+    public void setFechaReg(Timestamp fechaReg) {
+        this.fechaReg = fechaReg;
     }
 
-    public byte getStatus() {
-        return status;
+    public Timestamp getFechaMod() {
+        return fechaMod;
     }
 
-    public void setStatus(byte status) {
-        this.status = status;
+    public void setFechaMod(Timestamp fechaMod) {
+        this.fechaMod = fechaMod;
     }
-    
-    
+
+    public byte getEstado() {
+        return estado;
+    }
+
+    public void setEstado(byte estado) {
+        this.estado = estado;
+    }
+    public String getTipoPersona() {
+        return tipoPersona;
+    }
+
+    public void setTipoPersona(String tipoPersona) {
+        this.tipoPersona = tipoPersona;
+    }
 }
