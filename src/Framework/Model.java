@@ -7,8 +7,6 @@ package Framework;
 
 import Data.Connection.GenericStoredProcedures;
 import Data.Connection.SingletonConnection;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,13 +27,10 @@ public abstract class Model<T> implements DataAdapter<T> {
     public static final SingletonConnection CX = SingletonConnection.getInstance();
 
     //<editor-fold desc="Model Methods" defaultstate="collapsed"> 
-    public T loadData(ResultSet rs) throws SQLException {
-        return null;
-    }
+    public abstract T loadData(ResultSet rs) throws SQLException;
 
-    public Entity loadEntity() {
-        return null;
-    }
+    @Override
+    public abstract Entity loadEntity();
     //</editor-fold>
 
     //<editor-fold desc="Read Methods" defaultstate="collapsed">
@@ -45,9 +40,9 @@ public abstract class Model<T> implements DataAdapter<T> {
         try {
             CX.connect();
             Map<String, Object> args = new HashMap<>();
-            args.put("_table",loadEntity().getTable());
             args.put("_status", status.toString());
-            ResultSet rs = CX.callProcedure(GenericStoredProcedures.framework_generic_findAll.toString(), args);
+            Entity objEntity = loadEntity();
+            ResultSet rs = CX.callProcedure(objEntity.getTable() + "_findAll", args);
             while (rs.next()) {
                 list.add(loadData(rs));
             }
@@ -59,17 +54,15 @@ public abstract class Model<T> implements DataAdapter<T> {
     }
 
     @Override
-    public T findById(int id) {
-        T entity = null;
+    public List<T> findById(int id) {
+        List<T> entity = new ArrayList<>();
         try {
             CX.connect();
-            Entity ent=loadEntity();
-            Map<String,Object> args=new HashMap<>();
-            args.put(ent.getPrimaryKey(), id);
-            ent.setFields(args);
-            ResultSet rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_generic_findById, ent);
+            Map<String, Object> args = new HashMap<>();
+            args.put(loadEntity().getPrimaryKey(), id);
+            ResultSet rs = CX.callProcedure(loadEntity().getTable() + "_findById", args);
             while (rs.next()) {
-                entity=loadData(rs);
+                entity.add(loadData(rs));
             }
             CX.disconnect();
         } catch (SQLException e) {
@@ -81,11 +74,18 @@ public abstract class Model<T> implements DataAdapter<T> {
     @Override
     public List<T> findById(Map<String, Object> args) {
         List<T> entity = new ArrayList<>();
+        ResultSet rs=null;
         try {
             CX.connect();
-            Entity ent=loadEntity();
-            ent.setFields(args);
-            ResultSet rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_generic_findById, ent);
+            if (args != null) {
+                Entity ent = new Entity();
+                ent.setTable(args.get("table").toString());
+                args.remove("table");
+                ent.setFields(args);
+                rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_generic_findById, ent);
+            }else{
+                rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_findAll, loadEntity());
+            }
             while (rs.next()) {
                 entity.add(loadData(rs));
             }
@@ -114,6 +114,34 @@ public abstract class Model<T> implements DataAdapter<T> {
     //</editor-fold>
 
     //<editor-fold desc="CRUD Methods" defaultstate="collapsed">
+//    public int insert1() {
+//        int idInserted = -1;
+//        try {
+//            CX.connect();
+//            CX.setAutoCommit(false);
+//            Entity entity=loadEntity();
+//            idInserted= CX.callGenericProcedure1(GenericStoredProcedures.framework_generic_insert,entity);     
+//        } catch (SQLException ex) {
+//            getCatchError(ex,"insert");
+//        }finally{
+//            if (idInserted < 0) {
+//                try {
+//                    CX.rollback();
+//                    System.out.println("Rollback");
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            } else {
+//                try {
+//                    CX.commit();
+//                    System.out.println("Commit");
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }       
+//        return idInserted;
+//    }
     @Override
     public int insert() {
         int idInserted = -1;
@@ -123,16 +151,9 @@ public abstract class Model<T> implements DataAdapter<T> {
             Entity entity = loadEntity();
             ResultSet rs = CX.callGenericProcedure(GenericStoredProcedures.framework_generic_insert, entity);
             if (rs.next()) {
-                idInserted = rs.getInt("id");
+                idInserted = rs.getInt(1);
             }
-            SystemBinnacle binnacle = new SystemBinnacle();
-            binnacle.setEntity(entity);
-            binnacle.setTransaction_id(idInserted);
-            binnacle.setOperation(SystemBinnacle.Operation.Insert);
-            String ip = InetAddress.getLocalHost().getHostAddress();
-            binnacle.setIp(ip);
-            binnacle.insert();
-        } catch (SQLException | UnknownHostException ex) {
+        } catch (SQLException ex) {
             getCatchError(ex, "insert");
         } finally {
             if (idInserted < 0) {
@@ -159,19 +180,12 @@ public abstract class Model<T> implements DataAdapter<T> {
         int idUpdated = -1;
         try {
             CX.connect();
-            Entity entity = loadEntity();
-            ResultSet rs = CX.callGenericProcedure(GenericStoredProcedures.framework_generic_update, entity);
+            Entity objEntity = loadEntity();
+            ResultSet rs = CX.callGenericProcedure(GenericStoredProcedures.framework_generic_update, objEntity);
             if (rs.next()) {
                 idUpdated = rs.getInt("id");
             }
-            SystemBinnacle binnacle = new SystemBinnacle();
-            binnacle.setEntity(entity);
-            binnacle.setTransaction_id(idUpdated);
-            binnacle.setOperation(SystemBinnacle.Operation.Update);
-            String ip = InetAddress.getLocalHost().getHostAddress();
-            binnacle.setIp(ip);
-            binnacle.insert();
-        } catch (SQLException | UnknownHostException e) {
+        } catch (SQLException e) {
             getCatchError(e, "update");
         }
         return idUpdated;
@@ -182,20 +196,13 @@ public abstract class Model<T> implements DataAdapter<T> {
         int idDeleted = -1;
         try {
             CX.connect();
-            Entity entity = loadEntity();
-            ResultSet rs = CX.callGenericProcedure(GenericStoredProcedures.framework_generic_delete, entity);
+            Entity objEntity = loadEntity();
+            ResultSet rs = CX.callGenericProcedure(GenericStoredProcedures.framework_generic_delete, objEntity);
             if (rs.next()) {
                 idDeleted = rs.getInt("id");
             }
-            SystemBinnacle binnacle = new SystemBinnacle();
-            binnacle.setEntity(entity);
-            binnacle.setTransaction_id(idDeleted);
-            binnacle.setOperation(SystemBinnacle.Operation.Delete);
-            String ip = InetAddress.getLocalHost().getHostAddress();
-            binnacle.setIp(ip);
-            binnacle.insert();
-        } catch (SQLException | UnknownHostException e) {
-            getCatchError(e, "update");
+        } catch (SQLException e) {
+            getCatchError(e, "delete");
         }
         return idDeleted;
     }

@@ -13,6 +13,6 @@ public enum GenericStoredProcedures {
     framework_generic_insert,
     framework_generic_update,
     framework_generic_delete,
-    framework_generic_findAll,
+    framework_findAll,
     framework_generic_findById
 }

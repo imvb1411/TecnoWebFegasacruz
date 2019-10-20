@@ -23,6 +23,7 @@ public class Fegasacruz {
     public static void main(String[] args) {
         ClientPOP clientPOP = new ClientPOP();
         ClientSMTP clientSMTP;
+        System.out.println("Esperando");
         while (true) {
             if (clientPOP.connect()) {
                 List<MailMessage> list = clientPOP.getIndexMessagesList();

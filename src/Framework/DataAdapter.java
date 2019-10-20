@@ -16,10 +16,11 @@ import java.util.Map;
  */
 public interface DataAdapter<T> {
     
-    public abstract <T> List<T> findAll(Status status);
-    public abstract List<T> findById(Map<String,Object> args);
-    public abstract T findById(int id);
+    public abstract List<T> findAll(Status status);
+    public abstract List<T> findById(int id);
+    public abstract List<T> findById(Map<String, Object> args);
     public abstract List<T> findByParams(String procedure,Map<String,Object> args);
+    public abstract Entity loadEntity();
     public int insert();
     public int update();
     public int delete();

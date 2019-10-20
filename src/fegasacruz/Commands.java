@@ -5,14 +5,10 @@
  */
 package fegasacruz;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import Entities.ActividadEntity;
+import Models.ActividadModel;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -57,15 +53,16 @@ public class Commands {
         command = command.substring(0, index).trim();
         Object[] contents = args.split(",");
         switch (command.toUpperCase()) {
-//            case "INSERT_PEOPLE":
-//                try {
-//                    PeopleModel modelPerson = new PeopleModel();
-//                    modelPerson.setInsertModel(contents[0].toString(), contents[1].toString(), contents[2].toString(), PeopleModel.TypePerson.valueOf(contents[3].toString()));
-//                    idInserted = modelPerson.insert();
-//                } catch (Exception e) {
-//                    System.out.println("Error: " + e.getMessage());
-//                }
-//                break;
+            case "INSERTAR_ACTIVIDAD":
+                try {
+                    ActividadEntity actividadEntity=new ActividadEntity(contents[0].toString(),Integer.valueOf(contents[1].toString()),contents[2].toString());
+                    actividadEntity.setEstado(Byte.valueOf("1"));
+                    ActividadModel actividadModel = new ActividadModel(actividadEntity);
+                    idInserted = actividadModel.insert();
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
 //            case "INSERT_STAFF":
 //                StaffModel modelStaff = new StaffModel();
 //                modelStaff.setInsertModel(Integer.valueOf(contents[0].toString()), StaffModel.Occupation.valueOf(contents[1].toString()));

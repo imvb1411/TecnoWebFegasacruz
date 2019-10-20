@@ -193,30 +193,30 @@ public class SystemBinnacle extends Model<SystemBinnacle> {
         return super.findAll(status);
     }
 
-    @Override
-    public SystemBinnacle findById(int id) {
-        return super.findById(id);
-    }
+//    @Override
+//    public SystemBinnacle findById(int id) {
+//        return super.findById(id);
+//    }
     //</editor-fold>
 
     //<editor-fold desc="CRUD Methods" defaultstate="collapsed">
-    @Override
-    public int insert() {
-        int idInserted = -1;
-        try {
-            CX.connectBinnacle();
-            Entity entity = loadEntity();
-            ResultSet rs = Model.CX.callGenericProcedureBinnacle(GenericStoredProcedures.framework_generic_insert, entity);
-            if (rs.next()) {
-                idInserted = rs.getInt("id");
-            }
-            CX.disconnectBinnacle();
-        } catch (SQLException ex) {
-            Logger.getLogger(SystemBinnacle.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return idInserted;
-    }
+//    @Override
+//    public int insert() {
+//        int idInserted = -1;
+//        try {
+//            CX.connectBinnacle();
+//            Entity entity = loadEntity();
+//            ResultSet rs = Model.CX.callGenericProcedureBinnacle(GenericStoredProcedures.framework_generic_insert, entity);
+//            if (rs.next()) {
+//                idInserted = rs.getInt("id");
+//            }
+//            CX.disconnectBinnacle();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(SystemBinnacle.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return idInserted;
+//    }
 
     @Override
     public int update() {

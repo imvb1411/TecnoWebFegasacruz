@@ -35,8 +35,8 @@ public class ClientSMTP {
     //<editor-fold desc="Constructors">
     public ClientSMTP() {
         SERVER = "mail.ficct.uagrm.edu.bo";
-        RECEIVING_USER = "grupo18sc@mail.ficct.uagrm.edu.bo";
-        ISSUER_USER = "grupo18sc@mail.ficct.uagrm.edu.bo";
+        RECEIVING_USER = "grupo06sc@mail.ficct.uagrm.edu.bo";
+        ISSUER_USER = "grupo06sc@mail.ficct.uagrm.edu.bo";
     }
     
     public ClientSMTP(String receivingUser) {
@@ -44,7 +44,7 @@ public class ClientSMTP {
         //ISSUER_USER ="imvb14@gmail.com";
         SERVER = "mail.ficct.uagrm.edu.bo";
         RECEIVING_USER = receivingUser;
-        ISSUER_USER = "grupo18sc@mail.ficct.uagrm.edu.bo";
+        ISSUER_USER = "grupo06sc@mail.ficct.uagrm.edu.bo";
         
     }
     //</editor-fold>

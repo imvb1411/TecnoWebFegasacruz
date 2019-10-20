@@ -24,8 +24,8 @@ public class ClientPOP {
     //<editor-fold desc="Attributes" defaultstate="collapsed">
     private Socket socket;
     private final String SERVER;
-    private final String user = "grupo18sc";
-    private final String pass = "grupo18grupo18";
+    private final String user = "grupo06sc";
+    private final String pass = "grupo06grupo06";
     private BufferedReader in;
     private DataOutputStream out;
     private final int PORT = 110;

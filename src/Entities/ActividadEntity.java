@@ -24,6 +24,30 @@ public class ActividadEntity {
     public ActividadEntity() {
     }
 
+    public ActividadEntity(int id, String nombre, int codigo, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
+    }
+
+    public ActividadEntity(int id, String nombre, int codigo, String descripcion, byte estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
+
+    public ActividadEntity(String nombre, int codigo, String descripcion) {
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+    }
+
     public Timestamp getFechaReg() {
         return fechaReg;
     }

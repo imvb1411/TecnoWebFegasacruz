@@ -28,6 +28,11 @@ public class Entity {
         this.fields=fields;
     }
 
+    public Entity() {
+        
+    }
+
+    
     public String getTable() {
         return table;
     }

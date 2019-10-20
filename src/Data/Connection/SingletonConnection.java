@@ -14,9 +14,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,10 +31,15 @@ public class SingletonConnection implements Serializable {
     private final String DB_NAME = "db_grupo06sc";
     private String dbUser = "grupo06sc";
     private String dbPassword = "grupo06grupo06";
+//    
+//    private String dbHost = "localhost";
+//    private final String DB_NAME = "db_veterinary";
+//    private String dbUser = "postgres";
+//    private String dbPassword = "123";
+
     private final int DB_PORT = 5432;
     private final String url;
     private Connection objConnection;
-    private Connection objConnectionBinnacle;
     private static SingletonConnection _instance;
 
     public SingletonConnection(String dbHost, String dbUser, String dbPassword) {
@@ -60,10 +65,6 @@ public class SingletonConnection implements Serializable {
         return _instance;
     }
 
-    public Connection getConnection() {
-        return objConnection;
-    }
-
     /**
      * Connect to DB
      *
@@ -71,23 +72,11 @@ public class SingletonConnection implements Serializable {
      */
     public boolean connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("org.postgresql.Driver");
             objConnection = DriverManager.getConnection(url, dbUser, dbPassword);
             return true;
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("SingletonConnection.connect: Error " + e.getMessage());
-            Logger.getLogger(SingletonConnection.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        }
-    }
-
-    public boolean connectBinnacle() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            objConnectionBinnacle = DriverManager.getConnection(url, dbUser, dbPassword);
-            return true;
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
-            System.out.println("SingletonConnection.connectBinnacle: Error " + e.getMessage());
             Logger.getLogger(SingletonConnection.class.getName()).log(Level.SEVERE, null, e);
             return false;
         }
@@ -104,12 +93,6 @@ public class SingletonConnection implements Serializable {
         }
     }
 
-    public void disconnectBinnacle() throws SQLException {
-        if (objConnectionBinnacle != null) {
-            objConnectionBinnacle.close();
-        }
-    }
-
     /**
      * @param proc Name of stored procedure
      * @param args Map with the procedure parameters
@@ -122,7 +105,6 @@ public class SingletonConnection implements Serializable {
         if (args != null && !args.isEmpty()) {
             String params = getParams(args.size());
             cst = objConnection.prepareCall("{ call " + proc + params + "}");
-            System.out.println("{ call " + proc + params + "}");
             for (Map.Entry<String, Object> entrySet : args.entrySet()) {
                 String key = entrySet.getKey();
                 Object value = entrySet.getValue();
@@ -180,7 +162,7 @@ public class SingletonConnection implements Serializable {
                 }
             }
         } else {
-            cst = objConnection.prepareCall("{ call " + proc + "() }");
+            cst = objConnection.prepareCall("{ EXECUTE " + proc + "() }");
         }
         ResultSet result = cst.executeQuery();
 //        if (result.next()) {
@@ -192,12 +174,41 @@ public class SingletonConnection implements Serializable {
         return result;
     }
 
+    public ResultSet callGenericProcedure(GenericStoredProcedures procedure, Entity entity) throws SQLException {
+        Statement cst;
+        String query = "";
+        String query2 = "";
+        switch (procedure) {
+            case framework_generic_insert:
+                Object[] fieldsAndValues = getFieldsAndValues(entity);
+                query = "insert into " + entity.getTable() + "(" + fieldsAndValues[0] + ")values(" + fieldsAndValues[1] + ");";
+                query2 = " SELECT currval('" + entity.getTable() + "_id_seq')";
+                System.out.println(query);
+                break;
+            case framework_generic_update:
+                query = "execute " + procedure.toString() + "('" + entity.getTable() + "'," + getValuesForUpdate(entity.getFields()) + ",'" + (int) entity.getFields().get("id");
+                System.out.println(query);
+                break;
+            case framework_generic_delete:
+                query = "execute " + procedure.toString() + "('" + entity.getTable() + "'," + "'" + (int) entity.getFields().get("id") + "'";
+                System.out.println(query);
+                break;
+        }
+        cst = objConnection.createStatement();
+        cst.executeUpdate(query);
+        return (cst != null ? cst.executeQuery(query2) : null);
+    }
+
     public ResultSet callGenericFindProcedure(GenericStoredProcedures procedure, Entity entity) throws SQLException {
         CallableStatement cst;
         String query = "";
         switch (procedure) {
             case framework_generic_findById:
-                query = "call " + procedure.toString() + "('" + entity.getTable() + "'," + getValuesForFind(entity.getFields())+ ")";
+                query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
+                System.out.println(query);
+                break;
+            case framework_findAll:
+                query = "select * from " + entity.getTable() + " where estado=1;";
                 System.out.println(query);
                 break;
         }
@@ -205,43 +216,50 @@ public class SingletonConnection implements Serializable {
         return (cst != null ? cst.executeQuery() : null);
     }
 
-    public ResultSet callGenericProcedureBinnacle(GenericStoredProcedures procedure, Entity entity) throws SQLException {
-        return callGenericProcedureMask(objConnectionBinnacle, procedure, entity);
-    }
-
-    public ResultSet callGenericProcedure(GenericStoredProcedures procedure, Entity entity) throws SQLException {
-        return callGenericProcedureMask(objConnection, procedure, entity);
-    }
-
-    private ResultSet callGenericProcedureMask(Connection connection, GenericStoredProcedures procedure, Entity entity) throws SQLException {
-        CallableStatement cst;
-        String query = "";
-        switch (procedure) {
-            case framework_generic_insert:
-                Object[] fieldsAndValues = getFieldsAndValues(entity);
-                query = "call " + procedure.toString() + "('" + entity.getTable() + "'," + fieldsAndValues[0] + "," + fieldsAndValues[1] + ")";
-                System.out.println(query);
-                break;
-            case framework_generic_update:
-                query = "call " + procedure.toString() + "('" + entity.getTable() + "'," + getValuesForUpdate(entity.getFields()) + ",'" + (int) entity.getFields().get("id") + "');";
-                System.out.println(query);
-                break;
-            case framework_generic_delete:
-                query = "call " + procedure.toString() + "('" + entity.getTable() + "'," + "'" + (int) entity.getFields().get("id") + "');";
-                System.out.println(query);
-                break;
+    private String getValuesForFind(Map<String, Object> args) {
+        Object coma = '"';
+        String params = "";
+        int count = 0;
+        for (Map.Entry<String, Object> entrySet : args.entrySet()) {
+            count++;
+            if (count > 1) {
+                params += " and " + entrySet.getKey() + " = ";
+            } else {
+                params += entrySet.getKey() + " = ";
+            }
+            Object value = entrySet.getValue();
+            String className = value.getClass().getCanonicalName();
+            switch (className) {
+                case "java.lang.String":
+                    params += "'" + value.toString() + "' ";
+                    System.out.println("Result" + params);
+                    break;
+                case "java.lang.Integer":
+                    params += "'" + (int) value + "' ";
+                    System.out.println("Result" + params);
+                    break;
+                case "java.math.BigDecimal":
+                    params += "'" + new BigDecimal(value.toString()) + "' ";
+                    System.out.println("Result" + params);
+                    break;
+                case "java.lang.Byte":
+                    params += "'" + Byte.parseByte(value.toString()) + "' ";
+                    System.out.println("Result" + params);
+                    break;
+                default:
+                    System.out.println("No se encontró la clase " + className);
+                    break;
+            }
         }
-        cst = connection.prepareCall(query);
-        return (cst != null ? cst.executeQuery() : null);
+        return params;
     }
 
     private static Object[] getFieldsAndValues(Entity entity) {
         Map<String, Object> args = entity.getFields();
         Object[] result = new String[2];
         Object coma = '"';
-        result[0] = coma.toString();
-        result[1] = coma.toString();
-
+        result[0] = "";
+        result[1] = "";
         for (Map.Entry<String, Object> entrySet : args.entrySet()) {
             if (!entrySet.getKey().equals(entity.getPrimaryKey())) {
                 result[0] += entrySet.getKey() + ",";
@@ -261,21 +279,13 @@ public class SingletonConnection implements Serializable {
                         System.out.println("Result" + result[1]);
                         break;
                     case "java.sql.Date":
-                        result[1] += "'" + (java.sql.Date) value + "',";
-                        System.out.println("Result" + result[1]);
-                        break;
-                    case "java.util.Date":
-                        result[1] += "'" + new SimpleDateFormat("yyyy-MM-dd").format(value.toString()) + "',";
-                        System.out.println("Result" + result[1]);
-                        break;
-                    case "java.lang.Boolean":
-                        result[1] += "'" + (Boolean) value + "',";
+                        result[1] += "'" + java.sql.Date.valueOf(value.toString()) + "',";
                         System.out.println("Result" + result[1]);
                         break;
                     case "java.lang.Byte":
-                        result[1] += "'" + (Byte) value + "',";
+                        result[1] += "'" + Byte.parseByte(value.toString()) + "', ";
                         System.out.println("Result" + result[1]);
-                        break;
+                    break;
                     default:
                         System.out.println("No se encontró la clase " + className);
                         break;
@@ -284,8 +294,8 @@ public class SingletonConnection implements Serializable {
         }
         result[0] = result[0].toString().substring(0, result[0].toString().length() - 1);
         result[1] = result[1].toString().substring(0, result[1].toString().length() - 1);
-        result[0] = result[0].toString() + coma;
-        result[1] = result[1].toString() + coma;
+        result[0] = result[0].toString();//+"'";
+        result[1] = result[1].toString();//+"'";
         return result;
     }
 
@@ -310,52 +320,10 @@ public class SingletonConnection implements Serializable {
                         params += "'" + new BigDecimal(value.toString()) + "',";
                         System.out.println("Result" + params);
                         break;
-                    case "java.lang.Byte":
-                        params += "'" + Byte.parseByte(value.toString()) + "',";
-                        System.out.println("Result" + params);
-                        break;
                     default:
                         System.out.println("No se encontró la clase " + className);
                         break;
                 }
-            }
-        }
-        params = params + coma;
-        return params;
-    }
-
-    private String getValuesForFind(Map<String, Object> args) {
-        Object coma = '"';
-        String params = coma.toString();
-        int count=0;
-        for (Map.Entry<String, Object> entrySet : args.entrySet()) {
-            count++;
-            if(count>1)
-                params +=" and " + entrySet.getKey() + " like ";
-            else
-                params += entrySet.getKey() + " like ";
-            Object value = entrySet.getValue();
-            String className = value.getClass().getCanonicalName();
-            switch (className) {
-                case "java.lang.String":
-                    params += "'" + value.toString() + "' ";
-                    System.out.println("Result" + params);
-                    break;
-                case "java.lang.Integer":
-                    params += "'" + (int) value + "' ";
-                    System.out.println("Result" + params);
-                    break;
-                case "java.math.BigDecimal":
-                    params += "'" + new BigDecimal(value.toString()) + "' ";
-                    System.out.println("Result" + params);
-                    break;
-                case "java.lang.Byte":
-                    params += "'" + Byte.parseByte(value.toString()) + "' ";
-                    System.out.println("Result" + params);
-                    break;
-                default:
-                    System.out.println("No se encontró la clase " + className);
-                    break;
             }
         }
         params = params + coma;
