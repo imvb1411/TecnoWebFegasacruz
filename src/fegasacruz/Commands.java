@@ -101,7 +101,7 @@ public class Commands {
                 PersonaModel personaModel = new PersonaModel(personaEntity);                
                 idInserted = personaModel.insert();
                 break;
-            case "INSERT_PET":
+            case "INSERTAR_UBICACION":
                 UbicacionEntity ubicacionEntity=new UbicacionEntity(contents[0].toString(), Integer.valueOf(contents[1].toString()),Integer.valueOf(contents[2].toString()));
                 ubicacionEntity.setEstado(Byte.valueOf("1"));
                 UbicacionModel ubicacionModel = new UbicacionModel(ubicacionEntity);                
