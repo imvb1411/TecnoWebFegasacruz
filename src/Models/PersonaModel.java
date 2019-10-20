@@ -62,6 +62,6 @@ public class PersonaModel extends Model<PersonaEntity>{
         args.put("tipo_persona", tipo);       
         args.put("table", "persona");
         list=findById(args);
-        return list;*/
-    }
+        return list;
+    }*/
 }

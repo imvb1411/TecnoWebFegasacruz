@@ -23,6 +23,13 @@ public class UbicacionEntity {
     public UbicacionEntity() {
     }
 
+    public UbicacionEntity(String nombre, int tipoUbicacionIdc, int ubicacionid) {
+        this.nombre = nombre;
+        this.tipoUbicacionIdc = tipoUbicacionIdc;
+        this.ubicacionid = ubicacionid;
+    }
+
+    
     public int getId() {
         return id;
     }

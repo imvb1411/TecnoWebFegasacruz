@@ -101,18 +101,12 @@ public class Commands {
                 PersonaModel personaModel = new PersonaModel(personaEntity);                
                 idInserted = personaModel.insert();
                 break;
-//            case "INSERT_PET":
-//                PetsModel modelPet = new PetsModel();
-//                modelPet.setInsertModel(
-//                        Integer.valueOf(contents[0].toString()),
-//                        Integer.valueOf(contents[1].toString()),
-//                        Integer.valueOf(contents[2].toString()),
-//                        contents[3].toString(),
-//                        java.sql.Date.valueOf(contents[4].toString()),
-//                        contents[5].toString()
-//                );
-//                idInserted = modelPet.insert();
-//                break;
+            case "INSERT_PET":
+                UbicacionEntity ubicacionEntity=new UbicacionEntity(contents[0].toString(), Integer.valueOf(contents[1].toString()),Integer.valueOf(contents[2].toString()));
+                ubicacionEntity.setEstado(Byte.valueOf("1"));
+                UbicacionModel ubicacionModel = new UbicacionModel(ubicacionEntity);                
+                idInserted = ubicacionModel.insert();
+                break;
 //            case "INSERT_SURGERY":
 //                SurgeriesModel modelSurgery = new SurgeriesModel();
 //                modelSurgery.setInsertModel(
