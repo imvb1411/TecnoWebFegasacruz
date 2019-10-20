@@ -39,7 +39,7 @@ public class PersonaModel extends Model<PersonaEntity>{
         args.put("email", entity.getEmail());
         args.put("tipo_persona", entity.getTipoPersona());
         args.put("estado", entity.getEstado());
-        return new Entity("users_people", args);
+        return new Entity("persona", args);
     }
 
     @Override

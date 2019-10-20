@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  *
  * @author ASUS
  */
-public class Solicitud {
+public class SolicitudEntity {
     private int id;
     private String nroDocumento;
     private int nroOrdenPago;
@@ -24,7 +24,7 @@ public class Solicitud {
     private Timestamp fechaMod;
     private byte estado;
 
-    public Solicitud() {
+    public SolicitudEntity() {
     }
 
     public int getId() {
