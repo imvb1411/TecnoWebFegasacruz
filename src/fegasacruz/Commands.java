@@ -5,9 +5,11 @@
  */
 package fegasacruz;
 
-import Entities.ActividadEntity;
-import Models.ActividadModel;
+import Entities.*;
+import Models.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +57,7 @@ public class Commands {
         switch (command.toUpperCase()) {
             case "INSERTAR_ACTIVIDAD":
                 try {
-                    ActividadEntity actividadEntity=new ActividadEntity(contents[0].toString(),Integer.valueOf(contents[1].toString()),contents[2].toString());
+                    ActividadEntity actividadEntity = new ActividadEntity(contents[0].toString(), Integer.valueOf(contents[1].toString()), contents[2].toString());
                     actividadEntity.setEstado(Byte.valueOf("1"));
                     ActividadModel actividadModel = new ActividadModel(actividadEntity);
                     idInserted = actividadModel.insert();
@@ -63,26 +65,42 @@ public class Commands {
                     System.out.println("Error: " + e.getMessage());
                 }
                 break;
-//            case "INSERT_STAFF":
-//                StaffModel modelStaff = new StaffModel();
-//                modelStaff.setInsertModel(Integer.valueOf(contents[0].toString()), StaffModel.Occupation.valueOf(contents[1].toString()));
-//                idInserted = modelStaff.insert();
-//                break;
-//            case "INSERT_USER":
-//                UsersModel modelUser = new UsersModel();
-//                modelUser.setInsertModel(Integer.valueOf(contents[0].toString()), contents[1].toString(), contents[2].toString());
-//                idInserted = modelUser.insert();
-//                break;
-//            case "INSERT_SPECIE":
-//                SpeciesModel modelSpecie = new SpeciesModel();
-//                modelSpecie.setInsertModel(Integer.valueOf(contents[0].toString()), contents[1].toString());
-//                idInserted = modelSpecie.insert();
-//                break;
-//            case "INSERT_RACE":
-//                RacesModel modelRace = new RacesModel();
-//                modelRace.setInsertModel(Integer.valueOf(contents[0].toString()), Integer.valueOf(contents[1].toString()), contents[2].toString());
-//                idInserted = modelRace.insert();
-//                break;
+            case "INSERTAR_PLANO":
+                try {
+                    PlanoEntity planoEntity = new PlanoEntity(contents[0].toString().getBytes(), contents[1].toString());
+                    planoEntity.setEstado(Byte.valueOf("1"));
+                    PlanoModel planoModel = new PlanoModel(planoEntity);
+                    idInserted = planoModel.insert();
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            case "INSERTAR_MARCA":
+                try {
+                    MarcaEntity marcaEntity = new MarcaEntity(contents[0].toString().getBytes(), contents[1].toString());
+                    marcaEntity.setEstado(Byte.valueOf("1"));
+                    MarcaModel marcaModel = new MarcaModel(marcaEntity);
+                    idInserted = marcaModel.insert();
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            case "INSERTAR_TITULO":
+                try {
+                    TituloEntity tituloEntity = new TituloEntity(contents[0].toString().getBytes(), contents[1].toString());
+                    tituloEntity.setEstado(Byte.valueOf("1"));
+                    TituloModel tituloModel = new TituloModel(tituloEntity);
+                    idInserted = tituloModel.insert();
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+            case "INSERTAR_PERSONA":
+                PersonaEntity personaEntity=new PersonaEntity(contents[0].toString(), contents[1].toString(),contents[2].toString(),contents[3].toString(), contents[4].toString(), Integer.valueOf(contents[5].toString()));
+                personaEntity.setEstado(Byte.valueOf("1"));
+                PersonaModel personaModel = new PersonaModel(personaEntity);                
+                idInserted = personaModel.insert();
+                break;
 //            case "INSERT_PET":
 //                PetsModel modelPet = new PetsModel();
 //                modelPet.setInsertModel(
@@ -193,19 +211,19 @@ public class Commands {
 //                idInserted = modelConsultationProduct.insert();
 //                break;
 ////-----------------------------------------------------REPORTES--------------------------------------------------------------------
-//            case "RPT_CLIENT":
-//                List<PeopleModel> listClient = new PeopleModel().findByTypePerson(PeopleModel.TypePerson.Client);
-//                result.put("result", listClient);
-//                return result;
-//                
-//            case "RPT_STAFF":
-//                List<PeopleModel> listStaff = new PeopleModel().findByTypePerson(PeopleModel.TypePerson.Staff);
-//                result.put("result", listStaff);
-//                return result;
-//            case "RPT_USER":
-//                List<UsersModel> listUsers = new UsersModel().findById(null);
-//                result.put("result", listUsers);
-//                return result;
+/*            case "RPT_SOCIOS":
+                List<PersonaModel> listPersonal = new PersonaModel().findByTipoPersona(2);
+                result.put("result", listPersonal);
+                return result;
+                
+            case "RPT_PERSONAL":
+                List<PersonaModel> listPersonal = new PersonaModel().findByTipoPersona(1);
+                result.put("result", listPersonal);
+                return result;
+            case "RPT_ACTIVIDADES":
+                List<ActividadModel> listActividades = new ActividadModel().findById(null);
+                result.put("result", listActividades);
+                return result;*/
 //            case "RPT_SPECIE":
 //                List<SpeciesModel> listSpecies = new SpeciesModel().findById(null);
 //                result.put("result", listSpecies);

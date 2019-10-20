@@ -22,6 +22,29 @@ public class PlanoEntity {
     public PlanoEntity() {
     }
 
+    public PlanoEntity(int id, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
+    }
+
+    public PlanoEntity(int id, byte[] imagen, String descripcion, byte estado) {
+        this.id = id;
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
+
+    public PlanoEntity(byte[] imagen, String descripcion) {
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+    }
+
+   
+
     public int getId() {
         return id;
     }

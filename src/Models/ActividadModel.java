@@ -11,6 +11,7 @@ import Framework.Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,4 +58,13 @@ public class ActividadModel extends Model<ActividadEntity>{
         return entity;
     }
     
+    
+    /*public List<ActividadModel> findById(int id) {
+        List<ActividadModel> list;
+        Map<String,Object> args = new HashMap<>();
+        args.put("id", id);       
+        args.put("table", "persona");
+        list=findById(args);
+        return list;
+    }*/
 }

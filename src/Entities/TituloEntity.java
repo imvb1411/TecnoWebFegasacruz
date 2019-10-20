@@ -21,7 +21,28 @@ public class TituloEntity {
 
     public TituloEntity() {
     }
+    
+    public TituloEntity(int id, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
+    }
 
+    public TituloEntity(int id, byte[] imagen, String descripcion, byte estado) {
+        this.id = id;
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
+
+    public TituloEntity(byte[] imagen, String descripcion) {
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+    }
+    
     public int getId() {
         return id;
     }

@@ -6,6 +6,7 @@ import Framework.Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,4 +56,12 @@ public class PersonaModel extends Model<PersonaEntity>{
         return entity;
     }
     
+   /* public List<PersonaModel> findByTipoPersona(int tipo) {
+        List<PersonaModel> list;
+        Map<String,Object> args = new HashMap<>();
+        args.put("tipo_persona", tipo);       
+        args.put("table", "persona");
+        list=findById(args);
+        return list;*/
+    }
 }

@@ -18,12 +18,21 @@ public class PersonaEntity {
     private String apellido;
     private String telefono;
     private String email;
-    private String tipoPersona;
+    private int tipoPersona;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
 
     public PersonaEntity() {
+    }
+
+    public PersonaEntity(String ci, String nombre, String apellido, String telefono, String email, int tipoPersona) {
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.email = email;
+        this.tipoPersona = tipoPersona;
     }
 
     public int getId() {
@@ -97,11 +106,11 @@ public class PersonaEntity {
     public void setEstado(byte estado) {
         this.estado = estado;
     }
-    public String getTipoPersona() {
+    public int getTipoPersona() {
         return tipoPersona;
     }
 
-    public void setTipoPersona(String tipoPersona) {
+    public void setTipoPersona(int tipoPersona) {
         this.tipoPersona = tipoPersona;
     }
 }
