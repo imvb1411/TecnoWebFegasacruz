@@ -11,58 +11,69 @@ import java.sql.Timestamp;
  *
  * @author ASUS
  */
-public class UbicacionEntity {
+public class PersonalEntity {
+
     private int id;
-    private int ubicacionid;
-    private String nombre;
-    private String tipo;
+    private int personaId;
+    private String nick;
+    private String password;
+    private String tipoPersonal;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
 
-    public UbicacionEntity() {
+    public PersonalEntity() {
     }
 
-    public UbicacionEntity(int ubicacionid, String nombre, String tipo) {
-        this.ubicacionid = ubicacionid;
-        this.nombre = nombre;
-        this.tipo = tipo;
+    public PersonalEntity(int personaId, String nick, String password, String tipoPersonal) {
+        this.personaId = personaId;
+        this.nick = nick;
+        this.password = password;
+        this.tipoPersonal = tipoPersonal;
     }
 
     
 
-    
     public int getId() {
         return id;
+    }
+
+    public int getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(int personaId) {
+        this.personaId = personaId;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getTipoUbicacionId() {
-        return tipo;
+    public String getNick() {
+        return nick;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public int getUbicacionid() {
-        return ubicacionid;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setUbicacionid(int ubicacionid) {
-        this.ubicacionid = ubicacionid;
+    public String getTipoPersonal() {
+        return tipoPersonal;
     }
+
+    public void setTipoPersonal(String tipoPersonal) {
+        this.tipoPersonal = tipoPersonal;
+    }
+
     public Timestamp getFechaReg() {
         return fechaReg;
     }
@@ -86,4 +97,5 @@ public class UbicacionEntity {
     public void setEstado(byte estado) {
         this.estado = estado;
     }
+
 }

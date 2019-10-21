@@ -5,7 +5,7 @@
  */
 package Models;
 
-import Entities.UbicacionEntity;
+import Entities.PersonalEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
@@ -17,19 +17,19 @@ import java.util.Map;
  *
  * @author ASUS
  */
-public class UbicacionModel extends Model<UbicacionEntity>{
+public class PersonalModel extends Model<PersonalEntity>{
 
-    UbicacionEntity entity;
+    PersonalEntity entity;
 
-    public UbicacionModel(UbicacionEntity entity) {
+    public PersonalModel(PersonalEntity entity) {
         this.entity = entity;
     }
 
-    public UbicacionEntity getEntity() {
+    public PersonalEntity getEntity() {
         return entity;
     }
 
-    public void setEntity(UbicacionEntity entity) {
+    public void setEntity(PersonalEntity entity) {
         this.entity = entity;
     }
     
@@ -37,21 +37,23 @@ public class UbicacionModel extends Model<UbicacionEntity>{
     public Entity loadEntity() {
         Map<String,Object> args=new HashMap<>();
         args.put("id", entity.getId());
-        args.put("nombre ", entity.getNombre());
-        args.put("tipo ", entity.getTipoUbicacionId());
-        args.put("ubicacionId ", entity.getUbicacionid());
+        args.put("personaId ", entity.getPersonaId());
+        args.put("nick ", entity.getNick());
+        args.put("password ", entity.getPassword());
+        args.put("tipo_personal ", entity.getTipoPersonal());
         args.put("estado", entity.getEstado());
         return new Entity("ubicacion", args);
     }
 
     @Override
-    public UbicacionEntity loadData(ResultSet rs) throws SQLException {
-        entity=new UbicacionEntity();
+    public PersonalEntity loadData(ResultSet rs) throws SQLException {
+        entity=new PersonalEntity();
         if(rs.next()){
             entity.setId(rs.getInt("id"));
-            entity.setUbicacionid(rs.getInt("ubicacionId"));
-            entity.setNombre(rs.getString("nombre"));
-            entity.setTipo(rs.getString("tipo"));            
+            entity.setPersonaId(rs.getInt("personaId"));
+            entity.setNick(rs.getString("nick"));
+            entity.setPassword(rs.getString("password"));  
+            entity.setTipoPersonal(rs.getString("tipo_personal"));            
             entity.setEstado(rs.getByte("estado"));
         }
         return entity;

@@ -96,13 +96,13 @@ public class Commands {
                 }
                 break;
             case "INSERTAR_PERSONA":
-                PersonaEntity personaEntity=new PersonaEntity(contents[0].toString(), contents[1].toString(),contents[2].toString(),contents[3].toString(), contents[4].toString(), Integer.valueOf(contents[5].toString()));
+                PersonaEntity personaEntity=new PersonaEntity(contents[0].toString(), contents[1].toString(),contents[2].toString(),contents[3].toString(),contents[4].toString(), contents[5].toString(), contents[6].toString());
                 personaEntity.setEstado(Byte.valueOf("1"));
                 PersonaModel personaModel = new PersonaModel(personaEntity);                
                 idInserted = personaModel.insert();
                 break;
             case "INSERTAR_UBICACION":
-                UbicacionEntity ubicacionEntity=new UbicacionEntity(contents[0].toString(), Integer.valueOf(contents[1].toString()),Integer.valueOf(contents[2].toString()));
+                UbicacionEntity ubicacionEntity=new UbicacionEntity(Integer.valueOf(contents[0].toString()),contents[1].toString() ,contents[2].toString());
                 ubicacionEntity.setEstado(Byte.valueOf("1"));
                 UbicacionModel ubicacionModel = new UbicacionModel(ubicacionEntity);                
                 idInserted = ubicacionModel.insert();

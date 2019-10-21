@@ -35,7 +35,8 @@ public class PersonaModel extends Model<PersonaEntity>{
         args.put("id", entity.getId());
         args.put("ci", entity.getCi());
         args.put("nomre", entity.getNombre());
-        args.put("apellido", entity.getApellido());
+        args.put("apellido_pat", entity.getApellidoPaterno());
+        args.put("apellido_mat", entity.getApellidoMaterno());
         args.put("telefono", entity.getTelefono());
         args.put("email", entity.getEmail());
         args.put("tipo_persona", entity.getTipoPersona());
@@ -50,7 +51,8 @@ public class PersonaModel extends Model<PersonaEntity>{
             entity.setId(rs.getInt("id"));
             entity.setCi(rs.getString("ci"));
             entity.setNombre(rs.getString("nombre"));
-            entity.setApellido(rs.getString("apellido"));
+            entity.setApellidoPaterno(rs.getString("apellido_pat"));
+            entity.setApellidoMaterno(rs.getString("apellido_mat"));
             entity.setEstado(rs.getByte("estado"));
         }
         return entity;

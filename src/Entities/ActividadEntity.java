@@ -14,8 +14,8 @@ import java.sql.Timestamp;
 public class ActividadEntity {
     
     private int id;
-    private String nombre;
     private int codigo;
+    private String nombre;
     private String descripcion;
     private Timestamp fechaReg;
     private Timestamp fechaMod;

@@ -15,10 +15,11 @@ public class PersonaEntity {
     private int id;
     private String ci;
     private String nombre;
-    private String apellido;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
     private String telefono;
     private String email;
-    private int tipoPersona;
+    private String tipoPersona;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
@@ -26,10 +27,11 @@ public class PersonaEntity {
     public PersonaEntity() {
     }
 
-    public PersonaEntity(String ci, String nombre, String apellido, String telefono, String email, int tipoPersona) {
+    public PersonaEntity(String ci, String nombre, String apellidoPaterno,String apellidoMaterno, String telefono, String email, String tipoPersona) {
         this.ci = ci;
         this.nombre = nombre;
-        this.apellido = apellido;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.email = email;
         this.tipoPersona = tipoPersona;
@@ -38,7 +40,7 @@ public class PersonaEntity {
     public int getId() {
         return id;
     }
-
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -59,12 +61,20 @@ public class PersonaEntity {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     public String getTelefono() {
@@ -106,11 +116,11 @@ public class PersonaEntity {
     public void setEstado(byte estado) {
         this.estado = estado;
     }
-    public int getTipoPersona() {
+    public String getTipoPersona() {
         return tipoPersona;
     }
 
-    public void setTipoPersona(int tipoPersona) {
+    public void setTipoPersona(String tipoPersona) {
         this.tipoPersona = tipoPersona;
     }
 }
