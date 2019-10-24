@@ -6,6 +6,7 @@
 package Models;
 
 import Entities.MarcaEntity;
+import Entities.SolicitudEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
@@ -53,4 +54,8 @@ public class MarcaModel extends Model<MarcaEntity>{
         return entity;
     }
     
+    public SolicitudEntity getSolicitud(){
+        entity.setSolicitud(new SolicitudModel().findById(entity.getSolicitudId()));
+        return entity.getSolicitud();
+    }
 }

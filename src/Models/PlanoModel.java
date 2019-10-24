@@ -6,11 +6,13 @@
 package Models;
 
 import Entities.PlanoEntity;
+import Entities.SolicitudEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  *
@@ -52,4 +54,7 @@ public class PlanoModel extends Model<PlanoEntity>{
         return entity;
     }
     
+    public SolicitudEntity getSolicitud() {
+        return new SolicitudModel().findById(entity.getSolicitudId());
+    }
 }

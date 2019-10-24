@@ -7,9 +7,11 @@ package fegasacruz;
 
 import Models.Socket.ClientPOP;
 import Models.Socket.ClientSMTP;
+import Models.Socket.Mail;
 import Models.Socket.MailMessage;
 import java.util.List;
 import java.util.Map;
+import javax.mail.MessagingException;
 
 /**
  *
@@ -20,9 +22,10 @@ public class Fegasacruz {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MessagingException {
         ClientPOP clientPOP = new ClientPOP();
         ClientSMTP clientSMTP;
+        Mail mail2=new Mail();
         System.out.println("Esperando");
         while (true) {
             if (clientPOP.connect()) {
@@ -43,6 +46,7 @@ public class Fegasacruz {
                         inserted=Integer.valueOf(r.toString());
                         if(inserted>0){
                         clientSMTP.sendHTMLMessage("Respuesta al comando " +asunto, ": Se ejecutó correctamente.");
+                        mail2.sendHtmlEmail(from, "Prueba", "<html><body><b>EXITOSO</b></body></html>");
                     }else{
                         clientSMTP.sendMessage("Respuesta al comando " +asunto, ": Error al ejecutar el comando.");
                     }

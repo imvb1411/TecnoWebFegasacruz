@@ -1,6 +1,7 @@
 package Models;
 
 import Entities.PersonaEntity;
+import Entities.SolicitudEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
@@ -13,12 +14,15 @@ import java.util.Map;
  *
  * @author Mijael
  */
-public class PersonaModel extends Model<PersonaEntity>{
+public class PersonaModel extends Model<PersonaEntity> {
 
     PersonaEntity entity;
 
     public PersonaModel(PersonaEntity entity) {
         this.entity = entity;
+    }
+
+    public PersonaModel() {
     }
 
     public PersonaEntity getEntity() {
@@ -28,10 +32,10 @@ public class PersonaModel extends Model<PersonaEntity>{
     public void setEntity(PersonaEntity entity) {
         this.entity = entity;
     }
-    
+
     @Override
     public Entity loadEntity() {
-        Map<String,Object> args=new HashMap<>();
+        Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
         args.put("ci", entity.getCi());
         args.put("nomre", entity.getNombre());
@@ -46,24 +50,34 @@ public class PersonaModel extends Model<PersonaEntity>{
 
     @Override
     public PersonaEntity loadData(ResultSet rs) throws SQLException {
-        entity=new PersonaEntity();
-        if(rs.next()){
-            entity.setId(rs.getInt("id"));
-            entity.setCi(rs.getString("ci"));
-            entity.setNombre(rs.getString("nombre"));
-            entity.setApellidoPaterno(rs.getString("apellido_pat"));
-            entity.setApellidoMaterno(rs.getString("apellido_mat"));
-            entity.setEstado(rs.getByte("estado"));
+        entity = null;
+        if (rs.next()) {
+            entity=new PersonaEntity(
+                    rs.getInt("id"),
+                    rs.getString("ci"),
+                    rs.getString("nombre"), 
+                    rs.getString("apellido_pat"), 
+                    rs.getString("apellido_mat"), 
+                    rs.getString("telefono"), 
+                    rs.getString("telefono"), 
+                    PersonaEntity.TIPO.valueOf(rs.getString("tipo_persona")), 
+                    rs.getTimestamp("fecha_reg"), 
+                    rs.getTimestamp("fecha_mod"), 
+                    rs.getByte("estado")
+            );
         }
         return entity;
     }
-    
-   /* public List<PersonaModel> findByTipoPersona(int tipo) {
-        List<PersonaModel> list;
-        Map<String,Object> args = new HashMap<>();
-        args.put("tipo_persona", tipo);       
-        args.put("table", "persona");
-        list=findById(args);
-        return list;
-    }*/
+
+    public List<PersonaEntity> findByTipo(PersonaEntity.TIPO tipo) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("tipo_persona", tipo.toString());
+        return findListByParams(args);
+    }
+
+    public List<SolicitudEntity> getSolicitudes() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("cliente_id", entity.getId());
+        return new SolicitudModel().findListByParams(args);
+    }
 }

@@ -6,6 +6,7 @@
 package Models;
 
 import Entities.ActividadEntity;
+import Entities.SolicitudEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
@@ -24,6 +25,9 @@ public class ActividadModel extends Model<ActividadEntity>{
 
     public ActividadModel(ActividadEntity entity) {
         this.entity = entity;
+    }
+
+    public ActividadModel() {
     }
 
     public ActividadEntity getEntity() {
@@ -57,14 +61,16 @@ public class ActividadModel extends Model<ActividadEntity>{
         }
         return entity;
     }
+
+    @Override
+    public ActividadEntity findById(int id) {
+        return super.findById(id);
+    }
     
-    
-    /*public List<ActividadModel> findById(int id) {
-        List<ActividadModel> list;
-        Map<String,Object> args = new HashMap<>();
-        args.put("id", id);       
-        args.put("table", "persona");
-        list=findById(args);
-        return list;
-    }*/
+    public List<SolicitudEntity> getSolicitudes(){
+        Map<String,Object> args=new HashMap<>();
+        args.put("actividad_id", entity.getId());
+        entity.setSolicitudes(new SolicitudModel().findListByParams(args));
+        return entity.getSolicitudes();
+    }
 }

@@ -7,9 +7,7 @@ package fegasacruz;
 
 import Entities.*;
 import Models.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,7 +65,7 @@ public class Commands {
                 break;
             case "INSERTAR_PLANO":
                 try {
-                    PlanoEntity planoEntity = new PlanoEntity(contents[0].toString().getBytes(), contents[1].toString());
+                    PlanoEntity planoEntity = new PlanoEntity(Integer.valueOf(contents[0].toString()),contents[1].toString().getBytes(), contents[2].toString());
                     planoEntity.setEstado(Byte.valueOf("1"));
                     PlanoModel planoModel = new PlanoModel(planoEntity);
                     idInserted = planoModel.insert();
@@ -87,7 +85,7 @@ public class Commands {
                 break;
             case "INSERTAR_TITULO":
                 try {
-                    TituloEntity tituloEntity = new TituloEntity(contents[0].toString().getBytes(), contents[1].toString());
+                    TituloEntity tituloEntity = new TituloEntity(Integer.valueOf(contents[0].toString()),contents[1].toString().getBytes(), contents[2].toString());
                     tituloEntity.setEstado(Byte.valueOf("1"));
                     TituloModel tituloModel = new TituloModel(tituloEntity);
                     idInserted = tituloModel.insert();
@@ -96,13 +94,13 @@ public class Commands {
                 }
                 break;
             case "INSERTAR_PERSONA":
-                PersonaEntity personaEntity=new PersonaEntity(contents[0].toString(), contents[1].toString(),contents[2].toString(),contents[3].toString(),contents[4].toString(), contents[5].toString(), contents[6].toString());
+                PersonaEntity personaEntity=new PersonaEntity(contents[0].toString(), contents[1].toString(),contents[2].toString(),contents[3].toString(),contents[4].toString(), contents[5].toString(), PersonaEntity.TIPO.valueOf(contents[6].toString()));
                 personaEntity.setEstado(Byte.valueOf("1"));
                 PersonaModel personaModel = new PersonaModel(personaEntity);                
                 idInserted = personaModel.insert();
                 break;
             case "INSERTAR_UBICACION":
-                UbicacionEntity ubicacionEntity=new UbicacionEntity(Integer.valueOf(contents[0].toString()),contents[1].toString() ,contents[2].toString());
+                UbicacionEntity ubicacionEntity=new UbicacionEntity(Integer.valueOf(contents[0].toString()),contents[1].toString() ,UbicacionEntity.TIPO.valueOf(contents[2].toString()));
                 ubicacionEntity.setEstado(Byte.valueOf("1"));
                 UbicacionModel ubicacionModel = new UbicacionModel(ubicacionEntity);                
                 idInserted = ubicacionModel.insert();

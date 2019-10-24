@@ -6,6 +6,8 @@
 package Models;
 
 import Entities.ClienteSolicitudEntity;
+import Entities.DetalleRubroEntity;
+import Entities.Solicitud701Entity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
@@ -25,6 +27,9 @@ public class ClienteSolicitudModel extends Model<ClienteSolicitudEntity>{
         this.entity = entity;
     }
 
+    public ClienteSolicitudModel() {
+    }
+
     public ClienteSolicitudEntity getEntity() {
         return entity;
     }
@@ -37,30 +42,36 @@ public class ClienteSolicitudModel extends Model<ClienteSolicitudEntity>{
     public Entity loadEntity() {
         Map<String,Object> args=new HashMap<>();
         args.put("id", entity.getId());
-        args.put("persona_id", entity.getPersonaId());
-        args.put("solicitud_id", entity.getSolicitudId());
-        args.put("plano_id", entity.getPlanoId());
-        args.put("marca_id", entity.getMarcaId());
-        args.put("titulo_id", entity.getTituloId());
-        args.put("fecha_solicitud ", entity.getFechaSolicitud());
+        args.put("detallerubro_id", entity.getDetalleRubroId());
+        args.put("solicitud701_id", entity.getSolicitud701Id());
+        args.put("valor", entity.getValor());
         args.put("estado", entity.getEstado());
         return new Entity("cliente_solicitud", args);
     }
 
     @Override
     public ClienteSolicitudEntity loadData(ResultSet rs) throws SQLException {
-        entity=new ClienteSolicitudEntity();
+        entity=null;
         if(rs.next()){
-            entity.setId(rs.getInt("id"));
-            entity.setPersonaId(rs.getInt("persona_id"));
-            entity.setSolicitudId(rs.getInt("solicitud_id"));
-            entity.setPlanoId(rs.getInt("plano_id"));
-            entity.setMarcaId(rs.getInt("marca_id"));
-            entity.setTituloId(rs.getInt("titulo_id"));
-            entity.setFechaSolicitud(rs.getTimestamp("fecha_solicitud"));
-            entity.setEstado(rs.getByte("estado"));
+            entity=new ClienteSolicitudEntity(
+                    rs.getInt("id"),
+                    rs.getInt("detallerubro_id"), 
+                    rs.getInt("solicitud701_id "), 
+                    rs.getDouble("valor"), 
+                    rs.getTimestamp("fecha_reg"), 
+                    rs.getTimestamp("fecha_mod"), 
+                    rs.getByte("estado"));
         }
         return entity;
     }
     
+    public DetalleRubroEntity getDetalleRubro(){
+        entity.setDetalleRubro(new DetalleRubroModel().findById(entity.getDetalleRubroId()));
+        return entity.getDetalleRubro();
+    }
+    
+    public Solicitud701Entity getSolicitud701(){
+        entity.setSolicitud701(new Solicitud701Model().findById(entity.getSolicitud701Id()));
+        return entity.getSolicitud701();
+    }
 }

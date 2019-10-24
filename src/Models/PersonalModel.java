@@ -5,12 +5,15 @@
  */
 package Models;
 
+import Entities.PersonaEntity;
 import Entities.PersonalEntity;
+import Entities.SolicitudEntity;
 import Framework.Entity;
 import Framework.Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,4 +62,13 @@ public class PersonalModel extends Model<PersonalEntity>{
         return entity;
     }
     
+    public PersonaEntity getPersona(){
+        return new PersonaModel().findById(entity.getPersonaId());
+    }
+    
+    public List<SolicitudEntity> getSolicitudes() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("registrador_id", entity.getId());
+        return new SolicitudModel().findListByParams(args);
+    }
 }

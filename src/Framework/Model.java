@@ -40,9 +40,11 @@ public abstract class Model<T> implements DataAdapter<T> {
         try {
             CX.connect();
             Map<String, Object> args = new HashMap<>();
-            args.put("_status", status.toString());
-            Entity objEntity = loadEntity();
-            ResultSet rs = CX.callProcedure(objEntity.getTable() + "_findAll", args);
+            args.put("estado", status.toString());
+            Entity objEntity = new Entity();
+            objEntity.setTable(loadEntity().getTable());
+            objEntity.setFields(args);
+            ResultSet rs = CX.callGenericFindProcedure(objEntity);
             while (rs.next()) {
                 list.add(loadData(rs));
             }
@@ -52,58 +54,75 @@ public abstract class Model<T> implements DataAdapter<T> {
         }
         return list;
     }
-
+    
     @Override
-    public List<T> findById(int id) {
-        List<T> entity = new ArrayList<>();
+    public T findById(int id) {
+        T entity = null;
+        ResultSet rs;
         try {
-            CX.connect();
-            Map<String, Object> args = new HashMap<>();
-            args.put(loadEntity().getPrimaryKey(), id);
-            ResultSet rs = CX.callProcedure(loadEntity().getTable() + "_findById", args);
-            while (rs.next()) {
-                entity.add(loadData(rs));
+            Entity e = loadEntity();
+            rs = CX.executeSelectById(e, id);
+            if (rs.next()) {
+                entity = loadData(rs);
             }
-            CX.disconnect();
-        } catch (SQLException e) {
-            getCatchError(e, "findById");
+        } catch (SQLException ex) {
+            getCatchError(ex, "findById(id)");
         }
         return entity;
     }
 
     @Override
-    public List<T> findById(Map<String, Object> args) {
-        List<T> entity = new ArrayList<>();
-        ResultSet rs=null;
+    public List<T> findListById(int id) {
+        List<T> list = new ArrayList<>();
+        ResultSet rs;
+        try {
+            Entity e = loadEntity();
+            rs = CX.executeSelectById(e, id);
+            while (rs.next()) {
+                list.add(loadData(rs));
+            }
+        } catch (SQLException ex) {
+            getCatchError(ex, "findListById(id)");
+        }
+        return list;
+    }
+    
+    @Override
+    public T findByParams(Map<String, Object> args) {
+        T entity = null;
+        ResultSet rs;
         try {
             CX.connect();
             if (args != null) {
                 Entity ent = new Entity();
-                ent.setTable(args.get("table").toString());
-                args.remove("table");
+                ent.setTable(loadEntity().getTable());
                 ent.setFields(args);
-                rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_generic_findById, ent);
-            }else{
-                rs = CX.callGenericFindProcedure(GenericStoredProcedures.framework_findAll, loadEntity());
-            }
-            while (rs.next()) {
-                entity.add(loadData(rs));
+                rs = CX.callGenericFindProcedure(ent);
+                if (rs.next()) {
+                    entity=loadData(rs);
+                }
             }
             CX.disconnect();
         } catch (SQLException e) {
-            getCatchError(e, "findById");
+            getCatchError(e, "findByParams");
         }
         return entity;
     }
-
+    
     @Override
-    public List<T> findByParams(String proc, Map<String, Object> args) {
+    public List<T> findListByParams(Map<String, Object> args) {
         List<T> entity = new ArrayList<>();
+        ResultSet rs;
         try {
             CX.connect();
-            ResultSet rs = CX.callProcedure(proc, args);
-            while (rs.next()) {
-                entity.add(loadData(rs));
+            if (args != null) {
+                Entity ent = new Entity();
+                ent.setTable(loadEntity().getTable());
+                ent.setFields(args);
+                rs = CX.callGenericFindProcedure(ent);
+                while (rs.next()) {
+                    entity.add(loadData(rs));
+                }
             }
             CX.disconnect();
         } catch (SQLException e) {
@@ -114,34 +133,7 @@ public abstract class Model<T> implements DataAdapter<T> {
     //</editor-fold>
 
     //<editor-fold desc="CRUD Methods" defaultstate="collapsed">
-//    public int insert1() {
-//        int idInserted = -1;
-//        try {
-//            CX.connect();
-//            CX.setAutoCommit(false);
-//            Entity entity=loadEntity();
-//            idInserted= CX.callGenericProcedure1(GenericStoredProcedures.framework_generic_insert,entity);     
-//        } catch (SQLException ex) {
-//            getCatchError(ex,"insert");
-//        }finally{
-//            if (idInserted < 0) {
-//                try {
-//                    CX.rollback();
-//                    System.out.println("Rollback");
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            } else {
-//                try {
-//                    CX.commit();
-//                    System.out.println("Commit");
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }       
-//        return idInserted;
-//    }
+
     @Override
     public int insert() {
         int idInserted = -1;

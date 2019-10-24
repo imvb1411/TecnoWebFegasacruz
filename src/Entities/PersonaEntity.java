@@ -6,12 +6,26 @@
 package Entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
  * @author Mijael
  */
 public class PersonaEntity {
+    public static enum TIPO{
+        Cliente{
+            @Override
+            public String toString() {
+                return "CLI";
+            }
+        },Personal{
+            @Override
+            public String toString() {
+                return "PER";
+            }
+        }
+    }
     private int id;
     private String ci;
     private String nombre;
@@ -19,24 +33,51 @@ public class PersonaEntity {
     private String apellidoMaterno;
     private String telefono;
     private String email;
-    private String tipoPersona;
+    private TIPO tipo;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
 
-    public PersonaEntity() {
-    }
+    private List<SolicitudEntity> solicitudes;
 
-    public PersonaEntity(String ci, String nombre, String apellidoPaterno,String apellidoMaterno, String telefono, String email, String tipoPersona) {
+    public PersonaEntity(int id, String ci, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, TIPO tipo, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
         this.ci = ci;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.email = email;
-        this.tipoPersona = tipoPersona;
+        this.tipo=tipo;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
     }
 
+    public PersonaEntity(String ci, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, TIPO tipo) {
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.email = email;
+        this.tipo=tipo;
+    }
+
+    public PersonaEntity(String ci, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, TIPO tipo, byte estado) {
+        this.ci = ci;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.email = email;
+        this.tipo=tipo;
+        this.estado = estado;
+    }
+    
+    public PersonaEntity() {
+    }
+    
     public int getId() {
         return id;
     }
@@ -93,6 +134,18 @@ public class PersonaEntity {
         this.email = email;
     }
 
+    public void setTipo(TIPO tipo) {
+        this.tipo = tipo;
+    }
+    
+    public String getTipoPersona() {
+        return tipo.toString();
+    }
+
+    public boolean compareTipoPersona(TIPO tipo){
+        return this.tipo==tipo;
+    }
+    
     public Timestamp getFechaReg() {
         return fechaReg;
     }
@@ -116,11 +169,17 @@ public class PersonaEntity {
     public void setEstado(byte estado) {
         this.estado = estado;
     }
-    public String getTipoPersona() {
-        return tipoPersona;
+
+    public List<SolicitudEntity> getSolicitudes() {
+        return solicitudes;
     }
 
-    public void setTipoPersona(String tipoPersona) {
-        this.tipoPersona = tipoPersona;
+    public void setSolicitudes(List<SolicitudEntity> solicitudes) {
+        this.solicitudes = solicitudes;
+    }
+
+    @Override
+    public String toString() {
+        return apellidoPaterno+" "+apellidoMaterno+" "+nombre;
     }
 }

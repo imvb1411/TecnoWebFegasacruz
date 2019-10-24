@@ -14,15 +14,39 @@ import java.sql.Timestamp;
 public class ClienteSolicitudEntity {
     
     private int id;
-    private int personaId;
-    private int solicitudId;
-    private int planoId;
-    private int marcaId;
-    private int tituloId;
-    private Timestamp fechaSolicitud;
+    private int detalleRubroId;
+    private int solicitud701Id;
+    private double valor;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
+
+    private Solicitud701Entity solicitud701;
+    private DetalleRubroEntity detalleRubro;
+
+    public ClienteSolicitudEntity(int id, int detalleRubroId, int solicitud701Id, double valor, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
+        this.detalleRubroId = detalleRubroId;
+        this.solicitud701Id = solicitud701Id;
+        this.valor = valor;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
+    }
+
+    public ClienteSolicitudEntity(int id, int detalleRubroId, int solicitud701Id, double valor, byte estado) {
+        this.id = id;
+        this.detalleRubroId = detalleRubroId;
+        this.solicitud701Id = solicitud701Id;
+        this.valor = valor;
+        this.estado = estado;
+    }
+
+    public ClienteSolicitudEntity(int detalleRubroId, int solicitud701Id, double valor) {
+        this.detalleRubroId = detalleRubroId;
+        this.solicitud701Id = solicitud701Id;
+        this.valor = valor;
+    }
 
     public ClienteSolicitudEntity() {
     }
@@ -35,53 +59,30 @@ public class ClienteSolicitudEntity {
         this.id = id;
     }
 
-    public int getPersonaId() {
-        return personaId;
+    public int getDetalleRubroId() {
+        return detalleRubroId;
     }
 
-    public void setPersonaId(int personaId) {
-        this.personaId = personaId;
+    public void setDetalleRubroId(int detalleRubroId) {
+        this.detalleRubroId = detalleRubroId;
     }
 
-    public int getSolicitudId() {
-        return solicitudId;
+    public int getSolicitud701Id() {
+        return solicitud701Id;
     }
 
-    public void setSolicitudId(int solicitudId) {
-        this.solicitudId = solicitudId;
+    public void setSolicitud701Id(int solicitud701Id) {
+        this.solicitud701Id = solicitud701Id;
     }
 
-    public int getPlanoId() {
-        return planoId;
+    public double getValor() {
+        return valor;
     }
 
-    public void setPlanoId(int planoId) {
-        this.planoId = planoId;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
-    public int getMarcaId() {
-        return marcaId;
-    }
-
-    public void setMarcaId(int marcaId) {
-        this.marcaId = marcaId;
-    }
-
-    public int getTituloId() {
-        return tituloId;
-    }
-
-    public void setTituloId(int tituloId) {
-        this.tituloId = tituloId;
-    }
-
-    public Timestamp getFechaSolicitud() {
-        return fechaSolicitud;
-    }
-
-    public void setFechaSolicitud(Timestamp fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
-    }
     public Timestamp getFechaReg() {
         return fechaReg;
     }
@@ -104,5 +105,26 @@ public class ClienteSolicitudEntity {
 
     public void setEstado(byte estado) {
         this.estado = estado;
+    }
+
+    public Solicitud701Entity getSolicitud701() {
+        return solicitud701;
+    }
+
+    public void setSolicitud701(Solicitud701Entity solicitud701) {
+        this.solicitud701 = solicitud701;
+    }
+
+    public DetalleRubroEntity getDetalleRubro() {
+        return detalleRubro;
+    }
+
+    public void setDetalleRubro(DetalleRubroEntity detalleRubro) {
+        this.detalleRubro = detalleRubro;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(valor);
     }
 }

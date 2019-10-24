@@ -12,26 +12,82 @@ import java.sql.Timestamp;
  * @author ASUS
  */
 public class UbicacionEntity {
+    
+    public static enum TIPO{
+        Departamento{
+            @Override
+            public String toString() {
+                return "1";
+            }
+        },Provincia{
+            @Override
+            public String toString() {
+                return "2";
+            }
+        },Municipio{
+            @Override
+            public String toString() {
+                return "3";
+            }
+        },Zona{
+            @Override
+            public String toString() {
+                return "4";
+            }
+        },Subzona{
+            @Override
+            public String toString() {
+                return "5";
+            }
+        },Sitio{
+            @Override
+            public String toString() {
+                return "6";
+            }
+        }
+    }
+    
     private int id;
-    private int ubicacionid;
+    private int ubicacionId;
     private String nombre;
-    private String tipo;
+    private TIPO tipo;
+    private String tipoUbicacion;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
+    
+    private UbicacionEntity ubicacion;
 
+    public UbicacionEntity(int id, int ubicacionId, String nombre, TIPO tipo, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+        this.id = id;
+        this.ubicacionId = ubicacionId;
+        this.nombre = nombre;
+        this.tipoUbicacion = tipo.toString();
+        this.tipo=tipo;
+        this.fechaReg = fechaReg;
+        this.fechaMod = fechaMod;
+        this.estado = estado;
+    }
+
+    public UbicacionEntity(int id, int ubicacionId, String nombre, TIPO tipo, byte estado) {
+        this.id = id;
+        this.ubicacionId = ubicacionId;
+        this.nombre = nombre;
+        this.tipoUbicacion = tipo.toString();
+        this.tipo=tipo;
+        this.estado = estado;
+    }
+
+    public UbicacionEntity(int ubicacionid, String nombre, TIPO tipo) {
+        this.ubicacionId = ubicacionid;
+        this.nombre = nombre;
+        this.tipoUbicacion = tipo.toString();
+        this.tipo=tipo;
+    }
+    
     public UbicacionEntity() {
     }
 
-    public UbicacionEntity(int ubicacionid, String nombre, String tipo) {
-        this.ubicacionid = ubicacionid;
-        this.nombre = nombre;
-        this.tipo = tipo;
-    }
-
-    
-
-    
     public int getId() {
         return id;
     }
@@ -40,12 +96,12 @@ public class UbicacionEntity {
         this.id = id;
     }
 
-    public String getTipoUbicacionId() {
-        return tipo;
+    public int getUbicacionId() {
+        return ubicacionId;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setUbicacionId(int ubicacionId) {
+        this.ubicacionId = ubicacionId;
     }
 
     public String getNombre() {
@@ -55,14 +111,23 @@ public class UbicacionEntity {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public int getUbicacionid() {
-        return ubicacionid;
+
+    public TIPO getTipo() {
+        return tipo;
     }
 
-    public void setUbicacionid(int ubicacionid) {
-        this.ubicacionid = ubicacionid;
+    public void setTipo(TIPO tipo) {
+        this.tipo = tipo;
     }
+
+    public String getTipoUbicacion() {
+        return tipoUbicacion;
+    }
+
+    public void setTipoUbicacion(String tipoUbicacion) {
+        this.tipoUbicacion = tipoUbicacion;
+    }
+
     public Timestamp getFechaReg() {
         return fechaReg;
     }
@@ -86,4 +151,17 @@ public class UbicacionEntity {
     public void setEstado(byte estado) {
         this.estado = estado;
     }
+
+    public UbicacionEntity getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(UbicacionEntity ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }    
 }

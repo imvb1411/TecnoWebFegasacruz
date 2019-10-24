@@ -13,17 +13,21 @@ import java.sql.Timestamp;
  */
 public class TituloEntity {
     private int id;
+    private int solicitudId;
     private byte[] imagen;
     private String descripcion;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
 
+    private SolicitudEntity solicitud;
+    
     public TituloEntity() {
     }
     
-    public TituloEntity(int id, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+    public TituloEntity(int id,int solicitudId, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
         this.id = id;
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.fechaReg = fechaReg;
@@ -31,14 +35,16 @@ public class TituloEntity {
         this.estado = estado;
     }
 
-    public TituloEntity(int id, byte[] imagen, String descripcion, byte estado) {
+    public TituloEntity(int id,int solicitudId, byte[] imagen, String descripcion, byte estado) {
         this.id = id;
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.estado = estado;
     }
 
-    public TituloEntity(byte[] imagen, String descripcion) {
+    public TituloEntity(int solicitudId,byte[] imagen, String descripcion) {
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
     }
@@ -49,6 +55,14 @@ public class TituloEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getSolicitudId() {
+        return solicitudId;
+    }
+
+    public void setSolicitudId(int solicitudId) {
+        this.solicitudId = solicitudId;
     }
 
     public byte[] getImagen() {
@@ -89,5 +103,18 @@ public class TituloEntity {
 
     public void setEstado(byte estado) {
         this.estado = estado;
+    }
+
+    public SolicitudEntity getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(SolicitudEntity solicitud) {
+        this.solicitud = solicitud;
+    }
+
+    @Override
+    public String toString() {
+        return descripcion;
     }
 }

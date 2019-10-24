@@ -7,9 +7,11 @@ package fegasacruz;
 
 import Data.Connection.GenericStoredProcedures;
 import Data.Connection.SingletonConnection;
+import Entities.ActividadEntity;
 import Framework.Entity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,16 +25,18 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            SingletonConnection cx=SingletonConnection.getInstance();
-            cx.connect();
-            ResultSet rs=cx.callGenericFindProcedure(GenericStoredProcedures.framework_findAll, new Entity("actividad", null));
-            while(rs.next()){
-                System.out.println(rs.getString("id"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            SingletonConnection cx=SingletonConnection.getInstance();
+//            cx.connect();
+//            ResultSet rs=cx.callGenericFindProcedure(GenericStoredProcedures.framework_findAll, new Entity("actividad", null));
+//            while(rs.next()){
+//                System.out.println(rs.getString("id"));
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+            Class<ActividadEntity> e=ActividadEntity.class;
+            System.out.println(Arrays.toString(e.getDeclaredFields()));
     }
     
 }

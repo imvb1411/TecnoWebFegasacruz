@@ -13,17 +13,18 @@ import java.sql.Timestamp;
  */
 public class MarcaEntity {
     private int id;
+    private int solicitudId;
     private byte[] imagen;
     private String descripcion;
     private Timestamp fechaReg;
     private Timestamp fechaMod;
     private byte estado;
 
-    public MarcaEntity() {
-    }
-
-     public MarcaEntity(int id, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
+    private SolicitudEntity solicitud;
+    
+    public MarcaEntity(int id,int solicitudId, byte[] imagen, String descripcion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
         this.id = id;
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.fechaReg = fechaReg;
@@ -31,8 +32,9 @@ public class MarcaEntity {
         this.estado = estado;
     }
 
-    public MarcaEntity(int id, byte[] imagen, String descripcion, byte estado) {
+    public MarcaEntity(int id,int solicitudId, byte[] imagen, String descripcion, byte estado) {
         this.id = id;
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
         this.estado = estado;
@@ -42,12 +44,24 @@ public class MarcaEntity {
         this.imagen = imagen;
         this.descripcion = descripcion;
     }
+    
+    public MarcaEntity() {
+    }
+    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getSolicitudId() {
+        return solicitudId;
+    }
+
+    public void setSolicitudId(int solicitudId) {
+        this.solicitudId = solicitudId;
     }
 
     public byte[] getImagen() {
@@ -88,5 +102,18 @@ public class MarcaEntity {
 
     public void setEstado(byte estado) {
         this.estado = estado;
+    }
+
+    public SolicitudEntity getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(SolicitudEntity solicitud) {
+        this.solicitud = solicitud;
+    }
+
+    @Override
+    public String toString() {
+        return descripcion;
     }
 }

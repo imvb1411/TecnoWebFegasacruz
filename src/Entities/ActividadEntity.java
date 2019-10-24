@@ -6,6 +6,7 @@
 package Entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,7 @@ public class ActividadEntity {
     private Timestamp fechaMod;
     private byte estado;
 
+    private List<SolicitudEntity> solicitudes;
     public ActividadEntity() {
     }
 
@@ -103,5 +105,12 @@ public class ActividadEntity {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public List<SolicitudEntity> getSolicitudes() {
+        return solicitudes;
+    }
+
+    public void setSolicitudes(List<SolicitudEntity> solicitudes) {
+        this.solicitudes = solicitudes;
+    }
 }

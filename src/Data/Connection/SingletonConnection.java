@@ -101,7 +101,6 @@ public class SingletonConnection implements Serializable {
      */
     public ResultSet callProcedure(String proc, Map<String, Object> args) throws SQLException {
         CallableStatement cst;
-        //objConnection.setAutoCommit(false);
         if (args != null && !args.isEmpty()) {
             String params = getParams(args.size());
             cst = objConnection.prepareCall("{ call " + proc + params + "}");
@@ -165,12 +164,6 @@ public class SingletonConnection implements Serializable {
             cst = objConnection.prepareCall("{ EXECUTE " + proc + "() }");
         }
         ResultSet result = cst.executeQuery();
-//        if (result.next()) {
-//            objConnection.commit();
-//        } else {
-//            objConnection.rollback();
-//        }
-        //result.previous();
         return result;
     }
 
@@ -199,19 +192,28 @@ public class SingletonConnection implements Serializable {
         return (cst != null ? cst.executeQuery(query2) : null);
     }
 
-    public ResultSet callGenericFindProcedure(GenericStoredProcedures procedure, Entity entity) throws SQLException {
+    public ResultSet executeSelectById(Entity entity,int id)throws SQLException {
         CallableStatement cst;
-        String query = "";
-        switch (procedure) {
-            case framework_generic_findById:
-                query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
-                System.out.println(query);
-                break;
-            case framework_findAll:
-                query = "select * from " + entity.getTable() + " where estado=1;";
-                System.out.println(query);
-                break;
-        }
+        String query = "select * from " + entity.getTable() + " where " + entity.getPrimaryKey()+"'"+id+"'" + ";";
+        System.out.println(query);
+        cst = objConnection.prepareCall(query);
+        return (cst != null ? cst.executeQuery() : null);
+    }
+    
+    public ResultSet callGenericFindProcedure(Entity entity) throws SQLException {
+        CallableStatement cst;
+        String query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
+        System.out.println(query);
+//        switch (procedure) {
+//            case framework_generic_findById:
+//                query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
+//                System.out.println(query);
+//                break;
+//            case framework_findAll:
+//                query = "select * from " + entity.getTable() + " where estado=1;";
+//                System.out.println(query);
+//                break;
+//        }
         cst = objConnection.prepareCall(query);
         return (cst != null ? cst.executeQuery() : null);
     }

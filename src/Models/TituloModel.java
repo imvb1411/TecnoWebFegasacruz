@@ -5,6 +5,7 @@
  */
 package Models;
 
+import Entities.SolicitudEntity;
 import Entities.TituloEntity;
 import Framework.Entity;
 import Framework.Model;
@@ -22,6 +23,9 @@ public class TituloModel extends Model<TituloEntity>{
 
     public TituloModel(TituloEntity entity) {
         this.entity = entity;
+    }
+
+    public TituloModel() {
     }
 
     public TituloEntity getEntity() {
@@ -46,10 +50,16 @@ public class TituloModel extends Model<TituloEntity>{
         entity=new TituloEntity();
         if(rs.next()){
             entity.setId(rs.getInt("id"));
+            entity.setSolicitudId(rs.getInt("solicitud_id"));
             entity.setImagen(rs.getBytes("imagen"));
             entity.setDescripcion(rs.getString("descripcion"));
             entity.setEstado(rs.getByte("estado"));
         }
         return entity;
+    }
+    
+    public SolicitudEntity getSolicitud(){
+        entity.setSolicitud(new SolicitudModel().findById(entity.getSolicitudId()));
+        return entity.getSolicitud();
     }
 }
