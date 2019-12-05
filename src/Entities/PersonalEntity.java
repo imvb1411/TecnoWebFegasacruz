@@ -138,7 +138,7 @@ public class PersonalEntity{
 
     @Override
     public String toString() {
-        return tipoPersonal;
+        return nick;
     }
     
 }

@@ -6,12 +6,16 @@
 package fegasacruz;
 
 import Models.Socket.ClientPOP;
-import Models.Socket.ClientSMTP;
 import Models.Socket.Mail;
 import Models.Socket.MailMessage;
+import Utils.Utils;
+import Utils.ValidatorCommand;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.MessagingException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,10 +26,9 @@ public class Fegasacruz {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws MessagingException {
+    public static void main(String[] args) {
         ClientPOP clientPOP = new ClientPOP();
-        ClientSMTP clientSMTP;
-        Mail mail2=new Mail();
+        Mail mailManager = new Mail();
         System.out.println("Esperando");
         while (true) {
             if (clientPOP.connect()) {
@@ -34,43 +37,80 @@ public class Fegasacruz {
                     MailMessage mail = list.get(0);
                     String message = clientPOP.getMessage(mail.getIndex());
                     String asunto = clientPOP.getCommand(message).trim();
-                    Commands commandModel = new Commands(asunto);
-                    System.out.println("Asunto: "+asunto);
-                    Map<String,Object> result = commandModel.executeCommand();
-                    Object r=result.get("result");
-                    int inserted;
-                    List<Object> listR;
-                    String from=clientPOP.getFrom(message);
-                    clientSMTP=new ClientSMTP(from);
-                    if(r instanceof Integer){
-                        inserted=Integer.valueOf(r.toString());
-                        if(inserted>0){
-                        clientSMTP.sendHTMLMessage("Respuesta al comando " +asunto, ": Se ejecutó correctamente.");
-                        mail2.sendHtmlEmail(from, "Prueba", "<html><body><b>EXITOSO</b></body></html>");
-                    }else{
-                        clientSMTP.sendMessage("Respuesta al comando " +asunto, ": Error al ejecutar el comando.");
-                    }
-                    }else if(r instanceof List){
-                        listR=(List)r;
-                        if(listR.size()>0){
-                            for(Object o:listR){
-                                System.out.println("Object: "+(o).toString());
+                    CommandManager commandManager = new CommandManager(asunto);
+                    System.out.println("Asunto: " + asunto);
+                    String from = clientPOP.getFrom(message);
+                    commandManager.executeCommand(new ValidatorCommand() {
+                        @Override
+                        public void onSuccess() {
+                            try {
+                                String html = "";
+                                switch (commandManager.getTipoComando()) {
+                                    case Insercion:
+                                        int idInserted = (int) commandManager.getResult().get("result");
+                                        html = "EJECUTADO CORRECTAMENTE: LLAVE GENERADA=" + idInserted;
+                                        break;
+                                    case Reporte:
+                                        html = Utils.dibujarTablawithHTML((DefaultTableModel) commandManager.getResult().get("result"));
+                                        break;
+                                    case Estadistica:
+                                        html = Utils.dibujarTablawithHTML2((DefaultTableModel) commandManager.getResult().get("result"));
+                                        break;
+                                }
+                                System.out.println(html);
+                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html);
+                            } catch (MessagingException | IOException ex) {
+                                Logger.getLogger(Fegasacruz.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            String html=clientSMTP.writeRptHtml(listR);
-                            System.out.println("Correo------------------------------------------------------:");
-                            System.out.println(html);
-                            clientSMTP.sendMessage("Respuesta al comando " +asunto, html);
-                        }else{
-                            clientSMTP.sendMessage("Respuesta al comando " +asunto, ": No existen datos para listar.");
                         }
-                    }
+
+                        @Override
+                        public void onError() {
+                            try {
+                                String html = "Error al ejecutar el comando";
+                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html);
+                            } catch (MessagingException | IOException ex) {
+                                Logger.getLogger(Fegasacruz.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+
+                    //<editor-fold desc="Version Anterior" defaultstate="collapsed">
+//                    Object r = result.get("result");
+//                    int inserted;
+//                    String from = clientPOP.getFrom(message);
+//                    clientSMTP = new ClientSMTP(from);
+//                    if (r instanceof Integer) {
+//                        inserted = Integer.valueOf(r.toString());
+//                        if (inserted > 0) {
+//                            String respuestaHtml = Utils.mailResponse(Utils.TIPO_RESPUESTA.Success, commandModel.getCommand(), inserted);
+//                            mail2.sendHtmlEmail(from, "Respuesta al comando " + commandModel.getCommand(), respuestaHtml);
+//                        } else {
+//                            String respuestaHtml = Utils.mailResponse(Utils.TIPO_RESPUESTA.Error, commandModel.getCommand(), inserted);
+//                            mail2.sendHtmlEmail(from, "Respuesta al comando " + commandModel.getCommand(), respuestaHtml);
+//                        }
+//                    } else if (r instanceof DefaultTableModel) {
+//                        String html = "";
+//                        if (commandModel.getCommand().contains("RPT")) {
+//                            html = Utils.dibujarTablawithHTML((DefaultTableModel) r);
+//                            System.out.println("Correo------------------------------------------------------:");
+//                            System.out.println(html);
+//
+//                        } else if (commandModel.getCommand().contains("EST")) {
+//                            html = Utils.dibujarTablawithHTML2((DefaultTableModel) r);
+//                            System.out.println("Correo------------------------------------------------------:");
+//                            System.out.println(html);
+//                        } else if (commandModel.getCommand().contains("AYUDA")) {
+//                            html = "";
+//                        }
+//                        mail2.sendHtmlEmail(from, "Respuesta al comando " + commandModel.getCommand(), html);
+//                    }
+//</editor-fold>
                     list.remove(0);
                     clientPOP.deleteMessage(mail.getIndex());
                 }
                 clientPOP.disconnect();
             }
         }
-
     }
-    
 }

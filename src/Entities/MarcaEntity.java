@@ -40,7 +40,8 @@ public class MarcaEntity {
         this.estado = estado;
     }
 
-    public MarcaEntity(byte[] imagen, String descripcion) {
+    public MarcaEntity(int solicitudId,byte[] imagen, String descripcion) {
+        this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;
     }

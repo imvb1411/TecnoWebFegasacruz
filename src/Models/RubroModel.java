@@ -5,6 +5,7 @@
  */
 package Models;
 
+import Entities.ActividadEntity;
 import Entities.DetalleRubroEntity;
 import Entities.RubroEntity;
 import Framework.Entity;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -69,5 +71,17 @@ public class RubroModel extends Model<RubroEntity>{
         args.put("rubro_id", entity.getId());
         entity.setDetalle(new DetalleRubroModel().findListByParams(args));
         return entity.getDetalle();
+    }
+    
+    public DefaultTableModel toTable(List<RubroEntity> list) {
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"ID","NOMBRE","DESCRIPCION"}, list.size());
+        for (RubroEntity entity : list) {
+            model.addRow(new Object[]{
+                entity.getId(),
+                entity.getNombre(),
+                entity.getDescripcion()
+            });
+        }
+        return model;
     }
 }

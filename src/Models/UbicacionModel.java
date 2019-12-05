@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author ASUS
  */
-public class UbicacionModel extends Model<UbicacionEntity>{
+public class UbicacionModel extends Model<UbicacionEntity> {
 
     UbicacionEntity entity;
 
@@ -26,6 +26,7 @@ public class UbicacionModel extends Model<UbicacionEntity>{
     }
 
     public UbicacionModel() {
+        entity = new UbicacionEntity();
     }
 
     public UbicacionEntity getEntity() {
@@ -35,10 +36,10 @@ public class UbicacionModel extends Model<UbicacionEntity>{
     public void setEntity(UbicacionEntity entity) {
         this.entity = entity;
     }
-    
+
     @Override
     public Entity loadEntity() {
-        Map<String,Object> args=new HashMap<>();
+        Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
         args.put("nombre ", entity.getNombre());
         args.put("tipo ", entity.getTipoUbicacion());
@@ -49,21 +50,40 @@ public class UbicacionModel extends Model<UbicacionEntity>{
 
     @Override
     public UbicacionEntity loadData(ResultSet rs) throws SQLException {
-        entity=null;
-        if(rs.next()){
-            entity=new UbicacionEntity(
-                    rs.getInt("id"), 
-                    rs.getInt("ubicacionId"), 
-                    rs.getString("nombre"), 
-                    UbicacionEntity.TIPO.valueOf(rs.getString("tipo")), 
-                    rs.getTimestamp("fecha_reg"), 
-                    rs.getTimestamp("fecha_mod"), 
-                    rs.getByte("estado"));
+        entity = null;
+        UbicacionEntity.TIPO tipo = null;
+        switch (rs.getString("tipo")) {
+            case "1":
+                tipo = UbicacionEntity.TIPO.Departamento;
+                break;
+            case "2":
+                tipo = UbicacionEntity.TIPO.Provincia;
+                break;
+            case "3":
+                tipo = UbicacionEntity.TIPO.Municipio;
+                break;
+            case "4":
+                tipo = UbicacionEntity.TIPO.Zona;
+                break;
+            case "5":
+                tipo = UbicacionEntity.TIPO.Subzona;
+                break;
+            case "6":
+                tipo = UbicacionEntity.TIPO.Sitio;
+                break;
         }
+        entity = new UbicacionEntity(
+                rs.getInt("id"),
+                rs.getInt("ubicacion_id"),
+                rs.getString("nombre"),
+                tipo,
+                rs.getTimestamp("fecha_reg"),
+                rs.getTimestamp("fecha_mod"),
+                rs.getByte("estado"));
         return entity;
     }
-    
-    public UbicacionEntity getUbicacion(){
+
+    public UbicacionEntity getUbicacion() {
         return findById(entity.getUbicacionId());
     }
 }

@@ -8,7 +8,12 @@ package fegasacruz;
 import Data.Connection.GenericStoredProcedures;
 import Data.Connection.SingletonConnection;
 import Entities.ActividadEntity;
+import Entities.SolicitudEntity;
+import Entities.UbicacionEntity;
 import Framework.Entity;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -24,7 +29,7 @@ public class Test {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        try {
 //            SingletonConnection cx=SingletonConnection.getInstance();
 //            cx.connect();
@@ -35,8 +40,8 @@ public class Test {
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-            Class<ActividadEntity> e=ActividadEntity.class;
-            System.out.println(Arrays.toString(e.getDeclaredFields()));
+        //String style=new String(Files.readAllBytes(Paths.get("src/Utils/style.txt")));
+        System.out.println(SolicitudEntity.TIPO.valueOf("Formulario280"));
     }
-    
+
 }

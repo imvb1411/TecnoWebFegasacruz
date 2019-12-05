@@ -189,37 +189,32 @@ public class SingletonConnection implements Serializable {
         }
         cst = objConnection.createStatement();
         cst.executeUpdate(query);
-        return (cst != null ? cst.executeQuery(query2) : null);
+        return cst.executeQuery(query2);
     }
 
     public ResultSet executeSelectById(Entity entity,int id)throws SQLException {
         CallableStatement cst;
-        String query = "select * from " + entity.getTable() + " where " + entity.getPrimaryKey()+"'"+id+"'" + ";";
+        String query = "select * from " + entity.getTable() + " where " + entity.getPrimaryKey()+" = "+id+"" + ";";
         System.out.println(query);
         cst = objConnection.prepareCall(query);
         return (cst != null ? cst.executeQuery() : null);
+    }
+    
+    public ResultSet executeQuery(String query) throws SQLException{
+        CallableStatement cst;
+        cst=objConnection.prepareCall(query);
+        return (cst!=null ? cst.executeQuery():null);
     }
     
     public ResultSet callGenericFindProcedure(Entity entity) throws SQLException {
         CallableStatement cst;
         String query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
         System.out.println(query);
-//        switch (procedure) {
-//            case framework_generic_findById:
-//                query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
-//                System.out.println(query);
-//                break;
-//            case framework_findAll:
-//                query = "select * from " + entity.getTable() + " where estado=1;";
-//                System.out.println(query);
-//                break;
-//        }
         cst = objConnection.prepareCall(query);
         return (cst != null ? cst.executeQuery() : null);
     }
 
     private String getValuesForFind(Map<String, Object> args) {
-        Object coma = '"';
         String params = "";
         int count = 0;
         for (Map.Entry<String, Object> entrySet : args.entrySet()) {
@@ -259,7 +254,6 @@ public class SingletonConnection implements Serializable {
     private static Object[] getFieldsAndValues(Entity entity) {
         Map<String, Object> args = entity.getFields();
         Object[] result = new String[2];
-        Object coma = '"';
         result[0] = "";
         result[1] = "";
         for (Map.Entry<String, Object> entrySet : args.entrySet()) {

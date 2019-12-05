@@ -14,12 +14,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ASUS
  */
-public class ActividadModel extends Model<ActividadEntity>{
+public class ActividadModel extends Model<ActividadEntity> {
 
     ActividadEntity entity;
 
@@ -28,6 +29,7 @@ public class ActividadModel extends Model<ActividadEntity>{
     }
 
     public ActividadModel() {
+        entity=new ActividadEntity();
     }
 
     public ActividadEntity getEntity() {
@@ -37,10 +39,10 @@ public class ActividadModel extends Model<ActividadEntity>{
     public void setEntity(ActividadEntity entity) {
         this.entity = entity;
     }
-    
+
     @Override
     public Entity loadEntity() {
-        Map<String,Object> args=new HashMap<>();
+        Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
         args.put("nombre", entity.getNombre());
         args.put("codigo", entity.getCodigo());
@@ -51,14 +53,12 @@ public class ActividadModel extends Model<ActividadEntity>{
 
     @Override
     public ActividadEntity loadData(ResultSet rs) throws SQLException {
-        entity=new ActividadEntity();
-        if(rs.next()){
+        entity = new ActividadEntity();
             entity.setId(rs.getInt("id"));
             entity.setNombre(rs.getString("nombre"));
             entity.setCodigo(rs.getInt("codigo"));
             entity.setDescripcion(rs.getString("descripcion"));
             entity.setEstado(rs.getByte("estado"));
-        }
         return entity;
     }
 
@@ -66,11 +66,24 @@ public class ActividadModel extends Model<ActividadEntity>{
     public ActividadEntity findById(int id) {
         return super.findById(id);
     }
-    
-    public List<SolicitudEntity> getSolicitudes(){
-        Map<String,Object> args=new HashMap<>();
+
+    public List<SolicitudEntity> getSolicitudes() {
+        Map<String, Object> args = new HashMap<>();
         args.put("actividad_id", entity.getId());
         entity.setSolicitudes(new SolicitudModel().findListByParams(args));
         return entity.getSolicitudes();
+    }
+
+    public DefaultTableModel toTable(List<ActividadEntity> list) {
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"ID","CODIGO","NOMBRE","DESCRIPCION"}, list.size());
+        for (ActividadEntity entity : list) {
+            model.addRow(new Object[]{
+                entity.getId(),
+                entity.getCodigo(),
+                entity.getNombre(),
+                entity.getDescripcion()
+            });
+        }
+        return model;
     }
 }

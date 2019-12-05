@@ -5,6 +5,9 @@
  */
 package Models.Socket;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -23,7 +26,8 @@ import javax.mail.internet.MimeMessage;
 public class Mail {
     public void sendHtmlEmail(String toAddress,
             String subject, String message) throws AddressException,
-            MessagingException {
+            MessagingException,
+            IOException {
 
         // sets SMTP server properties
         Properties properties = new Properties();
@@ -35,8 +39,8 @@ public class Mail {
         // creates a new session with an authenticator
         Authenticator auth = new Authenticator() {
             public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("grupo06sc" + "@virtual.fcet.uagrm.edu.bo", "grupo06grupo06");
-//                return new PasswordAuthentication("grupo06sc" + "@mail.ficct.uagrm.edu.bo", "grupo06grupo06");
+                //return new PasswordAuthentication("grupo06sc" + "@virtual.fcet.uagrm.edu.bo", "grupo06grupo06");
+                return new PasswordAuthentication("grupo06sc" + "@mail.ficct.uagrm.edu.bo", "grupo06grupo06");
             }
         };
 
@@ -46,14 +50,15 @@ public class Mail {
         try {
             Message msg = new MimeMessage(session);
 
-            msg.setFrom(new InternetAddress("grupo06sc" + "@virtual.fcet.uagrm.edu.bo"));
-//            msg.setFrom(new InternetAddress("grupo06sc" + "@mail.ficct.uagrm.edu.bo"));
+            //msg.setFrom(new InternetAddress("grupo06sc" + "@virtual.fcet.uagrm.edu.bo"));
+            msg.setFrom(new InternetAddress("grupo06sc" + "@mail.ficct.uagrm.edu.bo"));
             InternetAddress[] toAddresses = {new InternetAddress(toAddress)};
             msg.setRecipients(Message.RecipientType.TO, toAddresses);
             msg.setSubject(subject);
             msg.setSentDate(new Date());
             // set plain text message
             msg.setContent(message, "text/html");
+            //msg.setContent(new String(Files.readAllBytes(Paths.get("src/Models/Socket/test.txt"))), "text/html");
             System.out.println("Envie MAIL: to=" + toAddress + " subject=" + subject + " data:" + message);
             // sends the e-mail
             Transport.send(msg);

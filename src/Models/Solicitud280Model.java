@@ -19,7 +19,16 @@ import java.util.Map;
  * @author Mijael
  */
 public class Solicitud280Model extends Model<Solicitud280Entity>{
+    
     Solicitud280Entity entity;
+
+    public Solicitud280Model(Solicitud280Entity entity) {
+        this.entity = entity;
+    }
+
+    public Solicitud280Model() {
+    }
+    
     @Override
     public Solicitud280Entity loadData(ResultSet rs) throws SQLException {
         entity=null;

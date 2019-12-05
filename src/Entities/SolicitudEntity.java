@@ -12,15 +12,15 @@ import java.util.Date;
  *
  * @author ASUS
  */
-public class SolicitudEntity {    
-    
-    public static enum TIPO{
-        Formulario280{
+public class SolicitudEntity {
+
+    public static enum TIPO {
+        Formulario280 {
             @Override
             public String toString() {
                 return "280";
             }
-        },Formulario701{
+        }, Formulario701 {
             @Override
             public String toString() {
                 return "701";
@@ -49,7 +49,7 @@ public class SolicitudEntity {
     private PersonaEntity registrador;
     private TituloEntity titulo;
     private UbicacionEntity ubicacion;
-    
+
     public SolicitudEntity(int id, int actividadId, int clienteId, int registradorId, int tituloId, int ubicacionId, TIPO tipo, String nroOrden, int gestion, double nroHectareas, Date fechaSolicitud, Date fechaFinalizacion, Timestamp fechaReg, Timestamp fechaMod, byte estado) {
         this.id = id;
         this.actividadId = actividadId;
@@ -155,13 +155,16 @@ public class SolicitudEntity {
     }
 
     public int getTipoSolicitud() {
-        return Integer.valueOf(tipo.toString());
+        if (tipo != null) {
+            return Integer.valueOf(tipo.toString());
+        }
+        return -1;
     }
 
-    public boolean compareTipo(TIPO tipo){
-        return this.tipo==tipo;
+    public boolean compareTipo(TIPO tipo) {
+        return this.tipo == tipo;
     }
-    
+
     public String getNroOrden() {
         return nroOrden;
     }

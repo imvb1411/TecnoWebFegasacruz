@@ -60,11 +60,13 @@ public abstract class Model<T> implements DataAdapter<T> {
         T entity = null;
         ResultSet rs;
         try {
+            CX.connect();
             Entity e = loadEntity();
             rs = CX.executeSelectById(e, id);
             if (rs.next()) {
                 entity = loadData(rs);
             }
+            CX.disconnect();
         } catch (SQLException ex) {
             getCatchError(ex, "findById(id)");
         }
@@ -76,11 +78,13 @@ public abstract class Model<T> implements DataAdapter<T> {
         List<T> list = new ArrayList<>();
         ResultSet rs;
         try {
+            CX.connect();
             Entity e = loadEntity();
             rs = CX.executeSelectById(e, id);
             while (rs.next()) {
                 list.add(loadData(rs));
             }
+            CX.disconnect();
         } catch (SQLException ex) {
             getCatchError(ex, "findListById(id)");
         }
@@ -129,6 +133,24 @@ public abstract class Model<T> implements DataAdapter<T> {
             getCatchError(e, "findByParams");
         }
         return entity;
+    }
+    
+    public List<T> findListByQuery(String query){
+        List<T> list = new ArrayList<>();
+        ResultSet rs;
+        try{
+            CX.connect();
+            if(query!=null && !query.isEmpty()){
+                rs=CX.executeQuery(query);
+                while(rs.next()){
+                    list.add(loadData(rs));
+                }
+            }
+            CX.disconnect();
+        }catch (SQLException e){
+            getCatchError(e, "findByParams");
+        }
+        return list;
     }
     //</editor-fold>
 

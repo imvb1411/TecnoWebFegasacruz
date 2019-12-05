@@ -18,7 +18,8 @@ import java.util.Map;
  *
  * @author ASUS
  */
-public class TituloModel extends Model<TituloEntity>{
+public class TituloModel extends Model<TituloEntity> {
+
     TituloEntity entity;
 
     public TituloModel(TituloEntity entity) {
@@ -26,6 +27,7 @@ public class TituloModel extends Model<TituloEntity>{
     }
 
     public TituloModel() {
+        entity = new TituloEntity();
     }
 
     public TituloEntity getEntity() {
@@ -35,20 +37,20 @@ public class TituloModel extends Model<TituloEntity>{
     public void setEntity(TituloEntity entity) {
         this.entity = entity;
     }
-    
+
     @Override
-    public Entity loadEntity(){
-        Map<String,Object> args=new HashMap<>();
+    public Entity loadEntity() {
+        Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
         args.put("imagen", entity.getImagen());
         args.put("descripcion", entity.getDescripcion());
         return new Entity("titulo", args);
     }
-    
+
     @Override
     public TituloEntity loadData(ResultSet rs) throws SQLException {
-        entity=new TituloEntity();
-        if(rs.next()){
+        entity = new TituloEntity();
+        if (rs.next()) {
             entity.setId(rs.getInt("id"));
             entity.setSolicitudId(rs.getInt("solicitud_id"));
             entity.setImagen(rs.getBytes("imagen"));
@@ -57,8 +59,8 @@ public class TituloModel extends Model<TituloEntity>{
         }
         return entity;
     }
-    
-    public SolicitudEntity getSolicitud(){
+
+    public SolicitudEntity getSolicitud() {
         entity.setSolicitud(new SolicitudModel().findById(entity.getSolicitudId()));
         return entity.getSolicitud();
     }

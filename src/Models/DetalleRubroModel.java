@@ -22,6 +22,13 @@ public class DetalleRubroModel extends Model<DetalleRubroEntity> {
 
     DetalleRubroEntity entity;
 
+    public DetalleRubroModel(DetalleRubroEntity entity) {
+        this.entity = entity;
+    }
+
+    public DetalleRubroModel() {
+    }
+
     @Override
     public DetalleRubroEntity loadData(ResultSet rs) throws SQLException {
         entity = null;

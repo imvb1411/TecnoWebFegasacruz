@@ -9,6 +9,7 @@ package Utils;
  *
  * @author Mijael
  */
-public enum Constants {
-
+public interface ValidatorCommand {
+    public void onSuccess();
+    public void onError();
 }

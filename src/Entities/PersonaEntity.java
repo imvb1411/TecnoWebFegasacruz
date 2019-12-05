@@ -13,13 +13,14 @@ import java.util.List;
  * @author Mijael
  */
 public class PersonaEntity {
-    public static enum TIPO{
-        Cliente{
+
+    public static enum TIPO {
+        Cliente {
             @Override
             public String toString() {
                 return "CLI";
             }
-        },Personal{
+        }, Personal {
             @Override
             public String toString() {
                 return "PER";
@@ -48,7 +49,7 @@ public class PersonaEntity {
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.email = email;
-        this.tipo=tipo;
+        this.tipo = tipo;
         this.fechaReg = fechaReg;
         this.fechaMod = fechaMod;
         this.estado = estado;
@@ -61,7 +62,7 @@ public class PersonaEntity {
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.email = email;
-        this.tipo=tipo;
+        this.tipo = tipo;
     }
 
     public PersonaEntity(String ci, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, TIPO tipo, byte estado) {
@@ -71,17 +72,17 @@ public class PersonaEntity {
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.email = email;
-        this.tipo=tipo;
+        this.tipo = tipo;
         this.estado = estado;
     }
-    
+
     public PersonaEntity() {
     }
-    
+
     public int getId() {
         return id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
@@ -137,15 +138,19 @@ public class PersonaEntity {
     public void setTipo(TIPO tipo) {
         this.tipo = tipo;
     }
-    
+
     public String getTipoPersona() {
-        return tipo.toString();
+        if (tipo != null) {
+            return tipo.toString();
+        } else {
+            return "";
+        }
     }
 
-    public boolean compareTipoPersona(TIPO tipo){
-        return this.tipo==tipo;
+    public boolean compareTipoPersona(TIPO tipo) {
+        return this.tipo == tipo;
     }
-    
+
     public Timestamp getFechaReg() {
         return fechaReg;
     }
@@ -180,6 +185,6 @@ public class PersonaEntity {
 
     @Override
     public String toString() {
-        return apellidoPaterno+" "+apellidoMaterno+" "+nombre;
+        return apellidoPaterno + " " + apellidoMaterno + " " + nombre;
     }
 }

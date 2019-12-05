@@ -40,10 +40,10 @@ public class PersonalModel extends Model<PersonalEntity>{
     public Entity loadEntity() {
         Map<String,Object> args=new HashMap<>();
         args.put("id", entity.getId());
-        args.put("personaId ", entity.getPersonaId());
-        args.put("nick ", entity.getNick());
-        args.put("password ", entity.getPassword());
-        args.put("tipo_personal ", entity.getTipoPersonal());
+        args.put("personaId", entity.getPersonaId());
+        args.put("nick", entity.getNick());
+        args.put("password", entity.getPassword());
+        args.put("tipo_persona", entity.getTipoPersonal());
         args.put("estado", entity.getEstado());
         return new Entity("ubicacion", args);
     }
