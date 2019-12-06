@@ -37,7 +37,8 @@ public class MarcaModel extends Model<MarcaEntity>{
     public Entity loadEntity(){
         Map<String,Object> args=new HashMap<>();
         args.put("id", entity.getId());
-        args.put("imagen", entity.getImagen());
+        args.put("solicitud_id", entity.getSolicitudId());
+        //args.put("imagen", entity.getImagen());
         args.put("descripcion", entity.getDescripcion());
         return new Entity("marca", args);
     }

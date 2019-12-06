@@ -42,7 +42,8 @@ public class TituloModel extends Model<TituloEntity> {
     public Entity loadEntity() {
         Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
-        args.put("imagen", entity.getImagen());
+        args.put("solicitud_id", entity.getSolicitudId());
+        //args.put("imagen", entity.getImagen());
         args.put("descripcion", entity.getDescripcion());
         return new Entity("titulo", args);
     }

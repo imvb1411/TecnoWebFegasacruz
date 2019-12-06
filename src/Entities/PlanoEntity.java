@@ -43,7 +43,7 @@ public class PlanoEntity {
         this.estado = estado;
     }
 
-    public PlanoEntity(int solicitudId,byte[] imagen, String descripcion) {
+    public PlanoEntity(int solicitudId, byte[] imagen, String descripcion) {
         this.solicitudId=solicitudId;
         this.imagen = imagen;
         this.descripcion = descripcion;

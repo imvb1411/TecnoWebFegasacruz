@@ -192,20 +192,20 @@ public class SingletonConnection implements Serializable {
         return cst.executeQuery(query2);
     }
 
-    public ResultSet executeSelectById(Entity entity,int id)throws SQLException {
+    public ResultSet executeSelectById(Entity entity, int id) throws SQLException {
         CallableStatement cst;
-        String query = "select * from " + entity.getTable() + " where " + entity.getPrimaryKey()+" = "+id+"" + ";";
+        String query = "select * from " + entity.getTable() + " where " + entity.getPrimaryKey() + " = " + id + "" + ";";
         System.out.println(query);
         cst = objConnection.prepareCall(query);
         return (cst != null ? cst.executeQuery() : null);
     }
-    
-    public ResultSet executeQuery(String query) throws SQLException{
+
+    public ResultSet executeQuery(String query) throws SQLException {
         CallableStatement cst;
-        cst=objConnection.prepareCall(query);
-        return (cst!=null ? cst.executeQuery():null);
+        cst = objConnection.prepareCall(query);
+        return (cst != null ? cst.executeQuery() : null);
     }
-    
+
     public ResultSet callGenericFindProcedure(Entity entity) throws SQLException {
         CallableStatement cst;
         String query = "select * from " + entity.getTable() + " where " + getValuesForFind(entity.getFields()) + ";";
@@ -239,6 +239,10 @@ public class SingletonConnection implements Serializable {
                     params += "'" + new BigDecimal(value.toString()) + "' ";
                     System.out.println("Result" + params);
                     break;
+                case "java.lang.Double":
+                    params += "'" + Double.valueOf(value.toString()) + "' ";
+                    System.out.println("Result" + params);
+                    break;
                 case "java.lang.Byte":
                     params += "'" + Byte.parseByte(value.toString()) + "' ";
                     System.out.println("Result" + params);
@@ -270,6 +274,10 @@ public class SingletonConnection implements Serializable {
                         result[1] += "'" + (int) value + "',";
                         System.out.println("Result" + result[1]);
                         break;
+                    case "java.lang.Double":
+                        result[1] += "'" + Double.valueOf(value.toString()) + "',";
+                        System.out.println("Result" + result[1]);
+                        break;
                     case "java.math.BigDecimal":
                         result[1] += "'" + new BigDecimal(value.toString()) + "',";
                         System.out.println("Result" + result[1]);
@@ -281,7 +289,7 @@ public class SingletonConnection implements Serializable {
                     case "java.lang.Byte":
                         result[1] += "'" + Byte.parseByte(value.toString()) + "', ";
                         System.out.println("Result" + result[1]);
-                    break;
+                        break;
                     default:
                         System.out.println("No se encontró la clase " + className);
                         break;

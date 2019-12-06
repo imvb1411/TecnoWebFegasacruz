@@ -5,6 +5,7 @@
  */
 package fegasacruz;
 
+import Entities.EstadisticaEntity;
 import Models.Socket.ClientPOP;
 import Models.Socket.Mail;
 import Models.Socket.MailMessage;
@@ -54,7 +55,8 @@ public class Fegasacruz {
                                         html = Utils.dibujarTablawithHTML((DefaultTableModel) commandManager.getResult().get("result"));
                                         break;
                                     case Estadistica:
-                                        html = Utils.dibujarTablawithHTML2((DefaultTableModel) commandManager.getResult().get("result"));
+                                        PieChart chart = new PieChart("Ejemplo", commandManager.getNombreEstadistica(), (List<EstadisticaEntity>) commandManager.getResult().get("result"));
+                                        //html = Utils.dibujarTablawithHTML2((DefaultTableModel) commandManager.getResult().get("result"));
                                         break;
                                 }
                                 System.out.println(html);

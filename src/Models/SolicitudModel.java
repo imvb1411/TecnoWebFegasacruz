@@ -57,8 +57,10 @@ public class SolicitudModel extends Model<SolicitudEntity> {
         args.put("nro_orden", entity.getNroOrden());
         args.put("gestion", entity.getGestion());
         args.put("nro_hectareas", entity.getNroHectareas());
-        args.put("fecha_solicitud", entity.getFechaSolicitud());
-        args.put("fecha_finalizacion", entity.getFechaFinalizacion());
+        args.put("fecha_solicitud", new SimpleDateFormat("yyyy-MM-dd").format(entity.getFechaSolicitud()));
+        if (entity.getFechaFinalizacion() != null) {
+            args.put("fecha_finalizacion", entity.getFechaFinalizacion());
+        }
         args.put("estado", entity.getEstado());
         return new Entity("solicitud", args);
     }
@@ -116,19 +118,25 @@ public class SolicitudModel extends Model<SolicitudEntity> {
         return solicitudes;
     }
 
-    public DefaultTableModel findStadisticsByDates(String desde, String hasta) {
+//    public DefaultTableModel findStadisticsByDates(String desde, String hasta) {
+//        String query = "select tipo_solicitud as label,count(*)as value from solicitud where fecha_solicitud>='" + desde + "' and fecha_solicitud<='" + hasta + "' and estado<>0 group by tipo_solicitud";
+//        System.out.println(query);
+//        List<EstadisticaEntity> solicitudes = new EstadisticaModel().findListByQuery(query);
+//        DefaultTableModel model = new DefaultTableModel(new Object[]{"TIPO_SOL", "TOTAL"}, solicitudes.size());
+//        model.setRowCount(0);
+//        for (EstadisticaEntity entity : solicitudes) {
+//            model.addRow(new Object[]{
+//                entity.getLabel(),
+//                entity.getValue()
+//            });
+//        }
+//        return model;
+//    }
+    public List<EstadisticaEntity> findStadisticsByDates(String desde, String hasta) {
         String query = "select tipo_solicitud as label,count(*)as value from solicitud where fecha_solicitud>='" + desde + "' and fecha_solicitud<='" + hasta + "' and estado<>0 group by tipo_solicitud";
         System.out.println(query);
         List<EstadisticaEntity> solicitudes = new EstadisticaModel().findListByQuery(query);
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"TIPO_SOL", "TOTAL"}, solicitudes.size());
-        model.setRowCount(0);
-        for (EstadisticaEntity entity : solicitudes) {
-            model.addRow(new Object[]{
-                entity.getLabel(),
-                entity.getValue()
-            });
-        }
-        return model;
+        return solicitudes;
     }
 
     public DefaultTableModel toTable(List<SolicitudEntity> list) {

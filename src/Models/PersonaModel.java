@@ -40,7 +40,7 @@ public class PersonaModel extends Model<PersonaEntity> {
         Map<String, Object> args = new HashMap<>();
         args.put("id", entity.getId());
         args.put("ci", entity.getCi());
-        args.put("nomre", entity.getNombre());
+        args.put("nombre", entity.getNombre());
         args.put("apellido_pat", entity.getApellidoPaterno());
         args.put("apellido_mat", entity.getApellidoMaterno());
         args.put("telefono", entity.getTelefono());

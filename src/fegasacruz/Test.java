@@ -41,7 +41,7 @@ public class Test {
 //            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         //String style=new String(Files.readAllBytes(Paths.get("src/Utils/style.txt")));
-        System.out.println(SolicitudEntity.TIPO.valueOf("Formulario280"));
+        System.out.println(UbicacionEntity.TIPO.valueOf("Departamento"));
     }
 
 }
