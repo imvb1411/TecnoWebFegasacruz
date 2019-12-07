@@ -174,4 +174,14 @@ public class SolicitudModel extends Model<SolicitudEntity> {
         }
         return model;
     }
+
+    public List<EstadisticaEntity> findStadisticsClientsTop() {
+        String query = "select count(*)as value,concat(persona.apellido_pat,' ',persona.apellido_mat,' ',persona.nombre)as label\n"
+                + "from solicitud, persona\n"
+                + "where cliente_id=persona.id\n"
+                + "group by persona.id";
+        System.out.println(query);
+        List<EstadisticaEntity> estadisticas = new EstadisticaModel().findListByQuery(query);
+        return estadisticas;
+    }
 }

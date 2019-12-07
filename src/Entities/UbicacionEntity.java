@@ -14,32 +14,32 @@ import java.sql.Timestamp;
 public class UbicacionEntity {
     
     public static enum TIPO{
-        Departamento{
+        DEPARTAMENTO{
             @Override
             public String toString() {
                 return "1";
             }
-        },Provincia{
+        },PROVINCIA{
             @Override
             public String toString() {
                 return "2";
             }
-        },Municipio{
+        },MUNICIPIO{
             @Override
             public String toString() {
                 return "3";
             }
-        },Zona{
+        },ZONA{
             @Override
             public String toString() {
                 return "4";
             }
-        },Subzona{
+        },SUBZONA{
             @Override
             public String toString() {
                 return "5";
             }
-        },Sitio{
+        },SITIO{
             @Override
             public String toString() {
                 return "6";

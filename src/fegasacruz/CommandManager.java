@@ -99,11 +99,11 @@ public class CommandManager {
             result.put("result", idInserted);
             //return result;
         }
-        args = command.substring(index + 1, index2);
-        command = command.substring(0, index).trim();
-        Object[] contents = args.split(",");
-        contents = quitarEspacios(contents);
         try {
+            args = command.substring(index + 1, index2);
+            command = command.substring(0, index).trim();
+            Object[] contents = args.split(",");
+            contents = quitarEspacios(contents);
             switch (command.toUpperCase()) {
                 case "AYUDA":
                     table = ayudaComandos.toTable();
@@ -157,7 +157,7 @@ public class CommandManager {
                     break;
                 case "INSERTAR_UBICACION":
                     try {
-                        UbicacionEntity ubicacionEntity = new UbicacionEntity(Integer.valueOf(contents[0].toString()), contents[1].toString(), UbicacionEntity.TIPO.valueOf(contents[2].toString()));
+                        UbicacionEntity ubicacionEntity = new UbicacionEntity(Integer.valueOf(contents[0].toString()), contents[1].toString(), UbicacionEntity.TIPO.valueOf(contents[2].toString().toUpperCase()));
                         ubicacionEntity.setEstado(Byte.valueOf("1"));
                         UbicacionModel ubicacionModel = new UbicacionModel(ubicacionEntity);
                         idInserted = ubicacionModel.insert();
@@ -260,6 +260,11 @@ public class CommandManager {
                     list = new SolicitudModel().findStadisticsByDates(contents[0].toString(), contents[1].toString());
                     tipoComando = TipoComando.Estadistica;
                     nombreEstadistica = "ESTADISTICAS DE SOLICITUDES";
+                    break;
+                case "EST_CLIENTES_TOP":
+                    list=new SolicitudModel().findStadisticsClientsTop();
+                    tipoComando=TipoComando.Estadistica;
+                    nombreEstadistica="ESTADISTICAS DE RANKING DE CLIENTES";
                     break;
                 default:
                     tipoComando = TipoComando.Desconocido;

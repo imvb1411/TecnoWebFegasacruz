@@ -54,22 +54,22 @@ public class UbicacionModel extends Model<UbicacionEntity> {
         UbicacionEntity.TIPO tipo = null;
         switch (rs.getString("tipo")) {
             case "1":
-                tipo = UbicacionEntity.TIPO.Departamento;
+                tipo = UbicacionEntity.TIPO.DEPARTAMENTO;
                 break;
             case "2":
-                tipo = UbicacionEntity.TIPO.Provincia;
+                tipo = UbicacionEntity.TIPO.PROVINCIA;
                 break;
             case "3":
-                tipo = UbicacionEntity.TIPO.Municipio;
+                tipo = UbicacionEntity.TIPO.MUNICIPIO;
                 break;
             case "4":
-                tipo = UbicacionEntity.TIPO.Zona;
+                tipo = UbicacionEntity.TIPO.ZONA;
                 break;
             case "5":
-                tipo = UbicacionEntity.TIPO.Subzona;
+                tipo = UbicacionEntity.TIPO.SUBZONA;
                 break;
             case "6":
-                tipo = UbicacionEntity.TIPO.Sitio;
+                tipo = UbicacionEntity.TIPO.SITIO;
                 break;
         }
         entity = new UbicacionEntity(

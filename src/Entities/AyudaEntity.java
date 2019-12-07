@@ -10,15 +10,18 @@ package Entities;
  * @author Mijael
  */
 public class AyudaEntity {
+
     private String operacion;
     private String parametros;
     private String descripcion;
+    private String comandoMuestra;
     private String comando;
 
-    public AyudaEntity(String operacion,String parametros, String descripcion, String comando) {
+    public AyudaEntity(String operacion, String parametros, String descripcion, String comandoMuestra, String comando) {
         this.operacion = operacion;
-        this.parametros=parametros;
+        this.parametros = parametros;
         this.descripcion = descripcion;
+        this.comandoMuestra = comandoMuestra;
         this.comando = comando;
     }
 
@@ -54,6 +57,12 @@ public class AyudaEntity {
         this.comando = comando;
     }
 
-    
-    
+    public String getComandoMuestra() {
+        return comandoMuestra;
+    }
+
+    public void setComandoMuestra(String comandoMuestra) {
+        this.comandoMuestra = comandoMuestra;
+    }
+
 }

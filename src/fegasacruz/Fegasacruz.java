@@ -41,26 +41,30 @@ public class Fegasacruz {
                     CommandManager commandManager = new CommandManager(asunto);
                     System.out.println("Asunto: " + asunto);
                     String from = clientPOP.getFrom(message);
+
                     commandManager.executeCommand(new ValidatorCommand() {
                         @Override
                         public void onSuccess() {
                             try {
                                 String html = "";
+                                String pathChart = "";
                                 switch (commandManager.getTipoComando()) {
                                     case Insercion:
                                         int idInserted = (int) commandManager.getResult().get("result");
                                         html = "EJECUTADO CORRECTAMENTE: LLAVE GENERADA=" + idInserted;
+                                        pathChart = "";
                                         break;
                                     case Reporte:
                                         html = Utils.dibujarTablawithHTML((DefaultTableModel) commandManager.getResult().get("result"));
+                                        pathChart = "";
                                         break;
                                     case Estadistica:
                                         PieChart chart = new PieChart("Ejemplo", commandManager.getNombreEstadistica(), (List<EstadisticaEntity>) commandManager.getResult().get("result"));
-                                        //html = Utils.dibujarTablawithHTML2((DefaultTableModel) commandManager.getResult().get("result"));
+                                        pathChart = "chart.jpg";
                                         break;
                                 }
                                 System.out.println(html);
-                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html);
+                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html, pathChart);
                             } catch (MessagingException | IOException ex) {
                                 Logger.getLogger(Fegasacruz.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -70,7 +74,7 @@ public class Fegasacruz {
                         public void onError() {
                             try {
                                 String html = "Error al ejecutar el comando";
-                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html);
+                                mailManager.sendHtmlEmail(from, "INFORME DE EJECUCION DEL COMANDO " + commandManager.getCommand(), html, "");
                             } catch (MessagingException | IOException ex) {
                                 Logger.getLogger(Fegasacruz.class.getName()).log(Level.SEVERE, null, ex);
                             }
